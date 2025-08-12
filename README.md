@@ -1,4 +1,4 @@
-# NetworkPing Monitor System
+# Network Ping Monitor System
 
 A comprehensive network monitoring system that tracks the availability and response times of networked devices using ICMP ping operations. The system continuously monitors network hosts, records their status, and provides real-time insights through a GraphQL API with WebSocket subscriptions.
 
@@ -120,14 +120,14 @@ The system follows a microservices architecture with independent, scalable servi
 - Docker & Docker Compose v2
 - Java 21 (for local development)
 - Node.js 18+ (for frontend development)
-- Git with submodule support
+- Git
 
 ### Automated Setup (Recommended)
 
-1. Clone the repository with submodules:
+1. Clone the repository:
 ```bash
-git clone --recursive git@github.com:kyleamielke/support.git
-cd support
+git clone https://github.com/kyleamielke/network-ping-monitor.git
+cd network-ping-monitor
 ```
 
 2. Run the automated setup script:
@@ -137,7 +137,7 @@ chmod +x scripts/setup.sh
 ```
 
 The setup script will:
-- Create .env files from templates with secure passwords
+- Create .env files from boilerplate templates with secure passwords
 - Build all Java microservices and frontend
 - Start infrastructure services (TimescaleDB, Kafka, Consul)
 - Start all application services
@@ -166,26 +166,33 @@ The setup script will:
 
 If you prefer manual control:
 
-1. Start all services:
+1. Create environment files:
+```bash
+# Copy boilerplate files
+cp env_files/boilerplate/*.env env_files/
+
+# Copy service-specific example files
+for service in services/*/; do
+  if [ -f "$service/.env.example" ]; then
+    cp "$service/.env.example" "$service/.env"
+  fi
+done
+```
+
+2. Start all services:
 ```bash
 docker compose up -d
 ```
 
-2. Verify services are running:
+3. Verify services are running:
 ```bash
 docker compose ps
 ```
 
-3. Access the services:
+4. Access the services:
 - Frontend: http://localhost:3000
 - GraphQL Playground: http://localhost:8080/graphiql
 - Consul UI: http://localhost:8500
-
-### Production Deployment
-
-For production environments:
-- Frontend: https://monitor.thatworked.io
-- API: https://api.thatworked.io/graphql
 
 ## API Examples
 
@@ -323,15 +330,23 @@ cd services/ping-service
 ./gradlew test
 ```
 
-### Updating Submodules
-```bash
-git submodule update --remote --merge
-```
-
 ### Cleanup
-Use the teardown script to stop and clean up:
+
+#### Teardown Script
+Stop and clean up services with various options:
+
 ```bash
+# Stop all services (preserves data)
 ./scripts/teardown.sh
+
+# Remove data volumes
+./scripts/teardown.sh --volumes
+
+# Remove Docker images
+./scripts/teardown.sh --images
+
+# Complete cleanup (volumes + images)
+./scripts/teardown.sh --all
 ```
 
 ## Technology Stack
@@ -367,10 +382,8 @@ Use the teardown script to stop and clean up:
 
 ## Contributing
 
-This is a private project. For questions or issues, please contact the maintainer.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-Copyright © 2025 Kyle Mielke. All rights reserved.
-
-This software is proprietary and confidential. Unauthorized copying, distribution, or use is strictly prohibited.
+MIT License - see LICENSE file for details
