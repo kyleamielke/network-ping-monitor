@@ -1,0 +1,39 @@
+# Database configuration
+# Configures PostgreSQL connection and JPA settings
+
+database:
+  # Connection settings
+  connection:
+    initial-size: ${DB_CONNECTION_INITIAL_SIZE:5}
+    max-total: ${DB_CONNECTION_MAX_TOTAL:20}
+    max-idle: ${DB_CONNECTION_MAX_IDLE:10}
+    min-idle: ${DB_CONNECTION_MIN_IDLE:5}
+    max-wait-millis: ${DB_CONNECTION_MAX_WAIT:30000}
+    
+  # Query performance settings
+  query:
+    timeout-seconds: ${DB_QUERY_TIMEOUT:30}
+    batch-size: ${DB_BATCH_SIZE:25}
+    fetch-size: ${DB_FETCH_SIZE:100}
+    
+  # JPA-specific settings
+  jpa:
+    show-sql: ${JPA_SHOW_SQL:false}
+    format-sql: ${JPA_FORMAT_SQL:false}
+    generate-ddl: ${JPA_GENERATE_DDL:false}
+    database-platform: "org.hibernate.dialect.PostgreSQLDialect"
+    
+    # Hibernate properties
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: ${JPA_BATCH_SIZE:25}
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+        
+  # Migration settings
+  migration:
+    enabled: ${DB_MIGRATION_ENABLED:false}
+    locations: "classpath:db/migration"
+    baseline-on-migrate: ${DB_BASELINE_ON_MIGRATE:false}

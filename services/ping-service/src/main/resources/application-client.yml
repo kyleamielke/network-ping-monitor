@@ -1,0 +1,12 @@
+device:
+  service:
+    url: ${DEVICE_SERVICE_URL:http://localhost:8081}
+
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          device-service:
+            connect-timeout: 5000
+            read-timeout: 10000

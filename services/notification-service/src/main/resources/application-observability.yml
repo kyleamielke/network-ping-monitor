@@ -1,0 +1,121 @@
+# Observability Configuration for Notification Service
+# This file contains monitoring, metrics, tracing, and health check settings
+
+notification-service:
+  observability:
+    # Metrics configuration
+    metrics:
+      # Enable metrics collection
+      enabled: ${METRICS_ENABLED:true}
+      
+      # Metric export interval (seconds)
+      export-interval: ${METRICS_EXPORT_INTERVAL:60}
+      
+      # Custom metrics
+      custom:
+        # Track notification counts by type
+        track-by-type: ${METRICS_TRACK_BY_TYPE:true}
+        
+        # Track notification counts by channel
+        track-by-channel: ${METRICS_TRACK_BY_CHANNEL:true}
+        
+        # Track processing times
+        track-processing-time: ${METRICS_TRACK_PROCESSING_TIME:true}
+        
+        # Track error rates
+        track-error-rates: ${METRICS_TRACK_ERROR_RATES:true}
+      
+      # Metric tags
+      tags:
+        service: ${METRICS_TAG_SERVICE:notification-service}
+        environment: ${METRICS_TAG_ENVIRONMENT:dev}
+        region: ${METRICS_TAG_REGION:us-east-1}
+    
+    # Distributed tracing configuration
+    tracing:
+      # Enable tracing
+      enabled: ${TRACING_ENABLED:true}
+      
+      # Sampling rate (0.0 to 1.0)
+      sampling-rate: ${TRACING_SAMPLING_RATE:1.0}
+      
+      # Trace ID format
+      trace-id-format: ${TRACING_ID_FORMAT:128-bit}
+      
+      # Baggage propagation
+      propagate-baggage: ${TRACING_PROPAGATE_BAGGAGE:true}
+      
+      # Span tags
+      tags:
+        notification.type: ${TRACING_TAG_TYPE:true}
+        notification.channel: ${TRACING_TAG_CHANNEL:true}
+        notification.recipient: ${TRACING_TAG_RECIPIENT:false}
+    
+    # Health check configuration
+    health:
+      # Database health check
+      database:
+        enabled: ${HEALTH_DATABASE_ENABLED:true}
+        timeout-ms: ${HEALTH_DATABASE_TIMEOUT:5000}
+        
+      # Email service health check
+      email:
+        enabled: ${HEALTH_EMAIL_ENABLED:true}
+        test-connection: ${HEALTH_EMAIL_TEST_CONNECTION:true}
+        timeout-ms: ${HEALTH_EMAIL_TIMEOUT:10000}
+        
+      # Kafka health check
+      kafka:
+        enabled: ${HEALTH_KAFKA_ENABLED:true}
+        timeout-ms: ${HEALTH_KAFKA_TIMEOUT:5000}
+        
+      # Custom health indicators
+      custom:
+        # Check template engine
+        template-engine: ${HEALTH_TEMPLATE_ENGINE:true}
+        
+        # Check notification queue
+        notification-queue: ${HEALTH_NOTIFICATION_QUEUE:true}
+        
+    # Logging configuration
+    logging:
+      # Structured logging
+      structured:
+        enabled: ${LOGGING_STRUCTURED_ENABLED:true}
+        format: ${LOGGING_STRUCTURED_FORMAT:JSON}
+        
+      # Log levels by category
+      levels:
+        notification: ${LOG_LEVEL_NOTIFICATION:INFO}
+        email: ${LOG_LEVEL_EMAIL:INFO}
+        kafka: ${LOG_LEVEL_KAFKA:INFO}
+        template: ${LOG_LEVEL_TEMPLATE:DEBUG}
+        
+      # Performance logging
+      performance:
+        enabled: ${LOGGING_PERFORMANCE_ENABLED:true}
+        slow-threshold-ms: ${LOGGING_SLOW_THRESHOLD:1000}
+        
+      # Audit logging
+      audit:
+        enabled: ${LOGGING_AUDIT_ENABLED:true}
+        include-request-body: ${LOGGING_AUDIT_REQUEST_BODY:false}
+        include-response-body: ${LOGGING_AUDIT_RESPONSE_BODY:false}
+    
+    # Alerting configuration
+    alerting:
+      # Error rate alerts
+      error-rate:
+        enabled: ${ALERT_ERROR_RATE_ENABLED:true}
+        threshold-percentage: ${ALERT_ERROR_RATE_THRESHOLD:5}
+        window-minutes: ${ALERT_ERROR_RATE_WINDOW:5}
+        
+      # Processing time alerts
+      processing-time:
+        enabled: ${ALERT_PROCESSING_TIME_ENABLED:true}
+        threshold-ms: ${ALERT_PROCESSING_TIME_THRESHOLD:5000}
+        
+      # Queue size alerts
+      queue-size:
+        enabled: ${ALERT_QUEUE_SIZE_ENABLED:true}
+        threshold-size: ${ALERT_QUEUE_SIZE_THRESHOLD:1000}

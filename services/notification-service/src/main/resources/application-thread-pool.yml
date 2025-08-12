@@ -1,0 +1,82 @@
+# Thread Pool Configuration for Notification Service
+# This file contains thread pool and async execution settings
+
+notification-service:
+  thread-pool:
+    # Core async executor
+    async-executor:
+      # Core pool size
+      core-size: ${ASYNC_CORE_SIZE:5}
+      
+      # Maximum pool size
+      max-size: ${ASYNC_MAX_SIZE:20}
+      
+      # Queue capacity
+      queue-capacity: ${ASYNC_QUEUE_CAPACITY:1000}
+      
+      # Keep alive time (seconds)
+      keep-alive-seconds: ${ASYNC_KEEP_ALIVE_SECONDS:60}
+      
+      # Thread name prefix
+      thread-name-prefix: ${ASYNC_THREAD_PREFIX:notification-async-}
+      
+      # Rejection policy (ABORT, CALLER_RUNS, DISCARD, DISCARD_OLDEST)
+      rejection-policy: ${ASYNC_REJECTION_POLICY:CALLER_RUNS}
+      
+      # Wait for tasks to complete on shutdown
+      wait-for-tasks-on-shutdown: ${ASYNC_WAIT_FOR_TASKS:true}
+      await-termination-seconds: ${ASYNC_AWAIT_TERMINATION:30}
+    
+    # Email sending thread pool
+    email-executor:
+      core-size: ${EMAIL_CORE_SIZE:3}
+      max-size: ${EMAIL_MAX_SIZE:10}
+      queue-capacity: ${EMAIL_QUEUE_CAPACITY:500}
+      keep-alive-seconds: ${EMAIL_KEEP_ALIVE_SECONDS:60}
+      thread-name-prefix: ${EMAIL_THREAD_PREFIX:notification-email-}
+      rejection-policy: ${EMAIL_REJECTION_POLICY:CALLER_RUNS}
+    
+    # Template processing thread pool
+    template-executor:
+      core-size: ${TEMPLATE_CORE_SIZE:2}
+      max-size: ${TEMPLATE_MAX_SIZE:5}
+      queue-capacity: ${TEMPLATE_QUEUE_CAPACITY:100}
+      keep-alive-seconds: ${TEMPLATE_KEEP_ALIVE_SECONDS:60}
+      thread-name-prefix: ${TEMPLATE_THREAD_PREFIX:notification-template-}
+      rejection-policy: ${TEMPLATE_REJECTION_POLICY:CALLER_RUNS}
+    
+    # Event publishing thread pool
+    event-executor:
+      core-size: ${EVENT_CORE_SIZE:2}
+      max-size: ${EVENT_MAX_SIZE:5}
+      queue-capacity: ${EVENT_QUEUE_CAPACITY:500}
+      keep-alive-seconds: ${EVENT_KEEP_ALIVE_SECONDS:60}
+      thread-name-prefix: ${EVENT_THREAD_PREFIX:notification-event-}
+      rejection-policy: ${EVENT_REJECTION_POLICY:DISCARD}
+    
+    # Scheduled task executor
+    scheduled-executor:
+      pool-size: ${SCHEDULED_POOL_SIZE:2}
+      thread-name-prefix: ${SCHEDULED_THREAD_PREFIX:notification-scheduled-}
+      
+    # Fork-join pool configuration (for parallel processing)
+    fork-join:
+      parallelism: ${FORK_JOIN_PARALLELISM:4}
+      async-mode: ${FORK_JOIN_ASYNC_MODE:true}
+      
+    # Virtual threads configuration (Java 21+)
+    virtual-threads:
+      enabled: ${VIRTUAL_THREADS_ENABLED:false}
+      executor-name: ${VIRTUAL_THREADS_NAME:notification-virtual}
+    
+    # Thread pool monitoring
+    monitoring:
+      # Enable thread pool metrics
+      metrics-enabled: ${THREAD_POOL_METRICS_ENABLED:true}
+      
+      # Log thread pool statistics
+      log-stats-enabled: ${THREAD_POOL_LOG_STATS:true}
+      log-stats-interval-seconds: ${THREAD_POOL_LOG_INTERVAL:300}
+      
+      # Alert on queue saturation
+      queue-saturation-threshold: ${THREAD_POOL_QUEUE_THRESHOLD:0.8}

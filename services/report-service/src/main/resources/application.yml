@@ -1,0 +1,120 @@
+# Main Application Configuration for Report Service
+# This file imports all modular configuration files and contains core Spring settings
+
+spring:
+  application:
+    name: report-service
+    
+  # Configuration imports - modular configuration files
+  config:
+    import:
+      - application-service.yml
+      - application-database.yml
+      - application-kafka.yml
+      - application-report.yml
+      - application-observability.yml
+  
+  # Database configuration
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://timescaledb:5432/support_report_db}
+    username: ${SPRING_DATASOURCE_USERNAME:support_report_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:report_secure_pass_2024}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
+    
+    # Connection pool configuration
+    hikari:
+      connection-timeout: ${HIKARI_CONNECTION_TIMEOUT:30000}
+      idle-timeout: ${HIKARI_IDLE_TIMEOUT:600000}
+      max-lifetime: ${HIKARI_MAX_LIFETIME:1800000}
+      maximum-pool-size: ${HIKARI_MAX_POOL_SIZE:10}
+      minimum-idle: ${HIKARI_MIN_IDLE:5}
+  
+  # JPA configuration
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:validate}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: ${JPA_FORMAT_SQL:false}
+        show_sql: ${JPA_SHOW_SQL:false}
+        jdbc:
+          batch_size: ${JPA_BATCH_SIZE:25}
+        order_inserts: true
+        order_updates: true
+    show-sql: ${JPA_SHOW_SQL:false}
+    
+  # Kafka configuration (basic settings, detailed in application-kafka.yml)
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+    consumer:
+      group-id: ${SPRING_KAFKA_CONSUMER_GROUP_ID:report-service}
+      auto-offset-reset: ${KAFKA_AUTO_OFFSET_RESET:earliest}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+  
+  # Service discovery configuration
+  cloud:
+    consul:
+      enabled: ${CONSUL_ENABLED:true}
+      host: ${SPRING_CLOUD_CONSUL_HOST:consul}
+      port: ${SPRING_CLOUD_CONSUL_PORT:8500}
+      discovery:
+        enabled: ${CONSUL_DISCOVERY_ENABLED:true}
+        instance-id: ${spring.application.name}:${server.port}:${random.value}
+        service-name: ${spring.application.name}
+        health-check-path: /actuator/health
+        health-check-interval: ${CONSUL_HEALTH_CHECK_INTERVAL:15s}
+        health-check-timeout: ${CONSUL_HEALTH_CHECK_TIMEOUT:10s}
+        prefer-ip-address: ${CONSUL_PREFER_IP_ADDRESS:true}
+
+# Server configuration
+server:
+  port: ${SERVER_PORT:8085}
+  
+  # Graceful shutdown
+  shutdown: ${SERVER_SHUTDOWN:graceful}
+  
+  # Error handling
+  error:
+    include-message: ${SERVER_ERROR_INCLUDE_MESSAGE:always}
+    include-binding-errors: ${SERVER_ERROR_INCLUDE_BINDING_ERRORS:always}
+    include-stacktrace: ${SERVER_ERROR_INCLUDE_STACKTRACE:on_param}
+    include-exception: ${SERVER_ERROR_INCLUDE_EXCEPTION:false}
+
+# Actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${MANAGEMENT_ENDPOINTS:health,info,metrics,prometheus}
+      base-path: ${MANAGEMENT_BASE_PATH:/actuator}
+  endpoint:
+    health:
+      show-details: ${MANAGEMENT_HEALTH_SHOW_DETAILS:always}
+      probes:
+        enabled: ${MANAGEMENT_HEALTH_PROBES_ENABLED:true}
+    metrics:
+      enabled: ${MANAGEMENT_METRICS_ENABLED:true}
+    prometheus:
+      enabled: ${MANAGEMENT_PROMETHEUS_ENABLED:true}
+  metrics:
+    export:
+      prometheus:
+        enabled: ${METRICS_EXPORT_PROMETHEUS_ENABLED:true}
+
+# Default logging configuration (detailed in application-observability.yml)
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT:INFO}
+    io.thatworked.support.report: ${LOG_LEVEL_REPORT:INFO}
+    org.springframework.web: ${LOG_LEVEL_SPRING_WEB:WARN}
+    org.springframework.kafka: ${LOG_LEVEL_KAFKA:INFO}

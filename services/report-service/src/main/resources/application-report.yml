@@ -1,0 +1,74 @@
+# Report-specific business configuration
+# Configures report generation settings and business rules
+
+report:
+  # Generation settings
+  generation:
+    timeout-minutes: ${REPORT_GENERATION_TIMEOUT:30}
+    max-concurrent: ${REPORT_MAX_CONCURRENT:5}
+    retry-attempts: ${REPORT_RETRY_ATTEMPTS:3}
+    retry-delay-seconds: ${REPORT_RETRY_DELAY:60}
+    
+  # Storage settings
+  storage:
+    base-path: ${REPORT_STORAGE_PATH:/tmp/reports}
+    retention-days: ${REPORT_RETENTION_DAYS:90}
+    max-size-mb: ${REPORT_MAX_SIZE_MB:100}
+    compression-enabled: ${REPORT_COMPRESSION_ENABLED:true}
+    
+  # Format settings
+  formats:
+    pdf:
+      enabled: ${REPORT_PDF_ENABLED:true}
+      font-family: ${REPORT_PDF_FONT:Helvetica}
+      page-size: ${REPORT_PDF_PAGE_SIZE:A4}
+      margin-inches: ${REPORT_PDF_MARGIN:1}
+      
+    csv:
+      enabled: ${REPORT_CSV_ENABLED:true}
+      delimiter: ${REPORT_CSV_DELIMITER:,}
+      quote-character: ${REPORT_CSV_QUOTE:\"} 
+      encoding: ${REPORT_CSV_ENCODING:UTF-8}
+      
+    excel:
+      enabled: ${REPORT_EXCEL_ENABLED:true}
+      sheet-name: ${REPORT_EXCEL_SHEET:Report}
+      
+  # Template settings
+  templates:
+    base-path: "classpath:templates/reports"
+    cache-enabled: ${REPORT_TEMPLATE_CACHE:true}
+    cache-ttl-minutes: ${REPORT_TEMPLATE_CACHE_TTL:60}
+    
+  # Scheduling settings
+  scheduling:
+    enabled: ${REPORT_SCHEDULING_ENABLED:true}
+    thread-pool-size: ${REPORT_SCHEDULER_THREADS:2}
+    
+    # Cleanup job
+    cleanup:
+      enabled: ${REPORT_CLEANUP_ENABLED:true}
+      cron: ${REPORT_CLEANUP_CRON:0 0 2 * * ?}
+      batch-size: ${REPORT_CLEANUP_BATCH:100}
+      
+  # Report types configuration
+  types:
+    device-status:
+      enabled: true
+      default-format: pdf
+      include-charts: true
+      
+    uptime:
+      enabled: true
+      default-format: excel
+      calculation-method: "percentage"
+      
+    performance:
+      enabled: true
+      default-format: pdf
+      include-statistics: true
+      
+    alert-summary:
+      enabled: true
+      default-format: pdf
+      group-by: ["severity", "device"]

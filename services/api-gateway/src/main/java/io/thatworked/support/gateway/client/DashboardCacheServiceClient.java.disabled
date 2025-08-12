@@ -1,0 +1,34 @@
+package io.thatworked.support.gateway.client;
+
+import io.thatworked.support.gateway.dto.dashboard.DeviceStatusDTO;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@FeignClient(
+    name = "dashboard-cache-service",
+    url = "${services.dashboard-cache.url:http://dashboard-cache-service:8085}",
+    fallbackFactory = DashboardCacheServiceFallbackFactory.class
+)
+public interface DashboardCacheServiceClient {
+    
+    @GetMapping("/api/device-status/v1")
+    List<DeviceStatusDTO> getAllDeviceStatuses();
+    
+    @GetMapping("/api/device-status/v1/{deviceId}")
+    DeviceStatusDTO getDeviceStatus(@PathVariable("deviceId") UUID deviceId);
+    
+    @GetMapping("/api/device-status/v1/online")
+    List<DeviceStatusDTO> getOnlineDevices();
+    
+    @GetMapping("/api/device-status/v1/offline")
+    List<DeviceStatusDTO> getOfflineDevices();
+    
+    @GetMapping("/api/device-status/v1/{deviceId}/online")
+    Boolean isDeviceOnline(@PathVariable("deviceId") UUID deviceId);
+    
+    @GetMapping("/api/device-status/v1/stats/size")
+    Integer getCacheSize();
+}

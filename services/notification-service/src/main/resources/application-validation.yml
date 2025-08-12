@@ -1,0 +1,94 @@
+# Validation Configuration for Notification Service
+# This file contains input validation rules and constraints
+
+notification-service:
+  validation:
+    # Email validation
+    email:
+      # Recipient validation
+      recipient:
+        required: ${VALIDATION_EMAIL_RECIPIENT_REQUIRED:true}
+        min-length: ${VALIDATION_EMAIL_RECIPIENT_MIN_LENGTH:5}
+        max-length: ${VALIDATION_EMAIL_RECIPIENT_MAX_LENGTH:255}
+        pattern: ${VALIDATION_EMAIL_RECIPIENT_PATTERN:^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\.[A-Za-z]{2,})$}
+        
+      # Subject validation
+      subject:
+        required: ${VALIDATION_EMAIL_SUBJECT_REQUIRED:true}
+        min-length: ${VALIDATION_EMAIL_SUBJECT_MIN_LENGTH:1}
+        max-length: ${VALIDATION_EMAIL_SUBJECT_MAX_LENGTH:500}
+        allow-empty: ${VALIDATION_EMAIL_SUBJECT_ALLOW_EMPTY:false}
+        
+      # Message body validation
+      message:
+        required: ${VALIDATION_EMAIL_MESSAGE_REQUIRED:true}
+        min-length: ${VALIDATION_EMAIL_MESSAGE_MIN_LENGTH:1}
+        max-length: ${VALIDATION_EMAIL_MESSAGE_MAX_LENGTH:50000}
+        allow-html: ${VALIDATION_EMAIL_MESSAGE_ALLOW_HTML:true}
+        strip-dangerous-html: ${VALIDATION_EMAIL_STRIP_DANGEROUS_HTML:true}
+    
+    # Notification request validation
+    notification:
+      # Type validation
+      type:
+        required: ${VALIDATION_NOTIFICATION_TYPE_REQUIRED:true}
+        allowed-values: ${VALIDATION_NOTIFICATION_ALLOWED_TYPES:DEVICE_DOWN,DEVICE_RECOVERED,HIGH_LATENCY,PACKET_LOSS,TEST}
+        
+      # Channel validation
+      channel:
+        required: ${VALIDATION_NOTIFICATION_CHANNEL_REQUIRED:true}
+        allowed-values: ${VALIDATION_NOTIFICATION_ALLOWED_CHANNELS:EMAIL,SLACK,TEAMS,SMS,WEBHOOK}
+        
+      # Metadata validation
+      metadata:
+        max-size: ${VALIDATION_METADATA_MAX_SIZE:100}
+        max-key-length: ${VALIDATION_METADATA_MAX_KEY_LENGTH:50}
+        max-value-length: ${VALIDATION_METADATA_MAX_VALUE_LENGTH:1000}
+        allowed-key-pattern: ${VALIDATION_METADATA_KEY_PATTERN:^[a-zA-Z][a-zA-Z0-9_]*$}
+        
+      # Source event ID validation
+      source-event-id:
+        required: ${VALIDATION_SOURCE_EVENT_ID_REQUIRED:false}
+        format: ${VALIDATION_SOURCE_EVENT_ID_FORMAT:UUID}
+    
+    # Device information validation (for events)
+    device:
+      # Device ID validation
+      id:
+        required: ${VALIDATION_DEVICE_ID_REQUIRED:true}
+        format: ${VALIDATION_DEVICE_ID_FORMAT:UUID}
+        
+      # Device name validation
+      name:
+        required: ${VALIDATION_DEVICE_NAME_REQUIRED:true}
+        min-length: ${VALIDATION_DEVICE_NAME_MIN_LENGTH:1}
+        max-length: ${VALIDATION_DEVICE_NAME_MAX_LENGTH:255}
+        
+      # IP address validation
+      ip-address:
+        required: ${VALIDATION_IP_ADDRESS_REQUIRED:true}
+        format: ${VALIDATION_IP_ADDRESS_FORMAT:IPV4_OR_IPV6}
+        allow-private: ${VALIDATION_IP_ALLOW_PRIVATE:true}
+        allow-loopback: ${VALIDATION_IP_ALLOW_LOOPBACK:true}
+    
+    # Time-based validation
+    time:
+      # Maximum age for events to process
+      max-event-age-minutes: ${VALIDATION_MAX_EVENT_AGE_MINUTES:60}
+      
+      # Time range validation for history queries
+      max-time-range-days: ${VALIDATION_MAX_TIME_RANGE_DAYS:90}
+      
+      # Future timestamp tolerance
+      future-timestamp-tolerance-minutes: ${VALIDATION_FUTURE_TIMESTAMP_TOLERANCE:5}
+    
+    # General validation settings
+    general:
+      # Fail fast on validation errors
+      fail-fast: ${VALIDATION_FAIL_FAST:true}
+      
+      # Log validation errors
+      log-errors: ${VALIDATION_LOG_ERRORS:true}
+      
+      # Include field names in error messages
+      include-field-names: ${VALIDATION_INCLUDE_FIELD_NAMES:true}

@@ -1,0 +1,64 @@
+# Build directories
+build/
+*/build/
+.gradle/
+target/
+out/
+dist/
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+
+# Environment files (keep examples)
+.env
+*/.env
+env_files/*.env
+!env_files/boilerplate/*.env
+!.env.example
+!*/.env.example
+
+# Node modules
+node_modules/
+*/node_modules/
+
+# Logs
+*.log
+logs/
+*/logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+docker-volumes/
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*~
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Frontend build
+frontend/build/
+frontend/dist/

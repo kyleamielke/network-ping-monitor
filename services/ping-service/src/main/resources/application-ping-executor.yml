@@ -1,0 +1,6 @@
+ping:
+  executor:
+    timeout-ms: 1000
+    batch-interval-ms: 100
+    max-concurrent-pings: 1000
+    ping-interval: 5

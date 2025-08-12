@@ -1,0 +1,52 @@
+# Circuit Breaker Configuration Profile
+# This allows fine-tuning circuit breaker behavior per service
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        failure-rate-threshold: ${CB_DEFAULT_FAILURE_THRESHOLD:50}
+        minimum-number-of-calls: ${CB_DEFAULT_MIN_CALLS:10}
+        wait-duration-in-open-state: ${CB_DEFAULT_WAIT_DURATION:30s}
+        permitted-number-of-calls-in-half-open-state: ${CB_DEFAULT_HALF_OPEN_CALLS:3}
+        sliding-window-size: ${CB_DEFAULT_WINDOW_SIZE:20}
+        sliding-window-type: ${CB_DEFAULT_WINDOW_TYPE:COUNT_BASED}
+        slow-call-duration-threshold: ${CB_DEFAULT_SLOW_THRESHOLD:3s}
+        slow-call-rate-threshold: ${CB_DEFAULT_SLOW_RATE:50}
+        automatic-transition-from-open-to-half-open-enabled: true
+      
+      critical-service:
+        failure-rate-threshold: ${CB_CRITICAL_FAILURE_THRESHOLD:40}
+        minimum-number-of-calls: ${CB_CRITICAL_MIN_CALLS:5}
+        wait-duration-in-open-state: ${CB_CRITICAL_WAIT_DURATION:20s}
+        permitted-number-of-calls-in-half-open-state: ${CB_CRITICAL_HALF_OPEN_CALLS:5}
+        sliding-window-size: ${CB_CRITICAL_WINDOW_SIZE:60}
+        sliding-window-type: ${CB_CRITICAL_WINDOW_TYPE:TIME_BASED}
+        slow-call-duration-threshold: ${CB_CRITICAL_SLOW_THRESHOLD:2s}
+        slow-call-rate-threshold: ${CB_CRITICAL_SLOW_RATE:40}
+        automatic-transition-from-open-to-half-open-enabled: true
+      
+      resilient-service:
+        failure-rate-threshold: ${CB_RESILIENT_FAILURE_THRESHOLD:60}
+        minimum-number-of-calls: ${CB_RESILIENT_MIN_CALLS:15}
+        wait-duration-in-open-state: ${CB_RESILIENT_WAIT_DURATION:45s}
+        permitted-number-of-calls-in-half-open-state: ${CB_RESILIENT_HALF_OPEN_CALLS:3}
+        sliding-window-size: ${CB_RESILIENT_WINDOW_SIZE:30}
+        sliding-window-type: ${CB_RESILIENT_WINDOW_TYPE:COUNT_BASED}
+        slow-call-duration-threshold: ${CB_RESILIENT_SLOW_THRESHOLD:5s}
+        slow-call-rate-threshold: ${CB_RESILIENT_SLOW_RATE:70}
+        automatic-transition-from-open-to-half-open-enabled: true
+    
+    instances:
+      device-service:
+        base-config: critical-service
+      ping-service:
+        base-config: default
+      alert-service:
+        base-config: resilient-service
+      report-service:
+        base-config: default
+      search-service:
+        base-config: critical-service
+      device-status-service:
+        base-config: default

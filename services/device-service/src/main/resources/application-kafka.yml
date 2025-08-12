@@ -1,0 +1,18 @@
+device-service:
+  kafka:
+    enabled: ${DEVICE_SERVICE_KAFKA_ENABLED:true}
+    topic:
+      device-events: ${DEVICE_SERVICE_KAFKA_TOPIC_DEVICE_EVENTS:device-events}
+      partitions: ${DEVICE_SERVICE_KAFKA_TOPIC_PARTITIONS:3}
+      replication-factor: ${DEVICE_SERVICE_KAFKA_TOPIC_REPLICATION_FACTOR:1}
+    consumer:
+      group-id: ${DEVICE_SERVICE_KAFKA_CONSUMER_GROUP_ID:device-service}
+      auto-commit: ${DEVICE_SERVICE_KAFKA_CONSUMER_AUTO_COMMIT:false}
+      session-timeout: ${DEVICE_SERVICE_KAFKA_CONSUMER_SESSION_TIMEOUT:30s}
+      max-poll-records: ${DEVICE_SERVICE_KAFKA_CONSUMER_MAX_POLL_RECORDS:500}
+    producer:
+      request-timeout: ${DEVICE_SERVICE_KAFKA_PRODUCER_REQUEST_TIMEOUT:30s}
+      retries: ${DEVICE_SERVICE_KAFKA_PRODUCER_RETRIES:3}
+      batch-size: ${DEVICE_SERVICE_KAFKA_PRODUCER_BATCH_SIZE:16384}
+      linger-time: ${DEVICE_SERVICE_KAFKA_PRODUCER_LINGER_TIME:5ms}
+      compression-type: ${DEVICE_SERVICE_KAFKA_PRODUCER_COMPRESSION_TYPE:snappy}

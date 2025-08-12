@@ -1,0 +1,72 @@
+type DeviceMonitoring {
+    device: Device!
+    pingTarget: PingTarget
+    currentStatus: DeviceStatus
+    recentAlerts(limit: Int): [Alert!]!
+    statistics(timeRange: TimeRange): PingStatistics
+    pingStatistics: PingStatistics
+}
+
+type DeviceStatus {
+    deviceId: ID!
+    deviceName: String!
+    ipAddress: String
+    hostname: String
+    online: Boolean!
+    lastStatusChange: DateTime
+    responseTime: Float
+    status: DeviceStatusEnum!
+    consecutiveSuccesses: Int
+    consecutiveFailures: Int
+}
+
+type MonitoringDashboard {
+    totalDevices: Int!
+    onlineDevices: Int!
+    offlineDevices: Int!
+    monitoredDevices: Int!
+    totalAlerts: Int!
+    unresolvedAlerts: Int!
+    systemHealth: SystemHealth!
+}
+
+type SystemHealth {
+    apiGateway: ServiceHealth!
+    deviceService: ServiceHealth!
+    pingService: ServiceHealth!
+    alertService: ServiceHealth!
+}
+
+type ServiceHealth {
+    name: String!
+    status: HealthStatus!
+    message: String
+}
+
+type DeviceStatusUpdate {
+    deviceId: ID!
+    previousStatus: DeviceStatusEnum!
+    currentStatus: DeviceStatusEnum!
+    timestamp: DateTime!
+}
+
+type BulkMonitoringResult {
+    totalDevices: Int!
+    successful: Int!
+    failed: Int!
+    errors: [String!]
+}
+
+enum DeviceStatusEnum {
+    ONLINE
+    OFFLINE
+    UNKNOWN
+    ALERTING
+    NOT_MONITORED
+}
+
+enum HealthStatus {
+    UP
+    DOWN
+    UNKNOWN
+}

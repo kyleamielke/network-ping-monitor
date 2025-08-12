@@ -1,0 +1,1 @@
+export { ConfirmDialog } from '@/shared/components/ConfirmDialog/ConfirmDialog';

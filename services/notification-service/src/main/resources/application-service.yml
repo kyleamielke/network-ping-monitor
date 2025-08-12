@@ -1,0 +1,51 @@
+# Service Configuration for Notification Service
+# This file contains service metadata and general application settings
+
+notification-service:
+  service:
+    # Service metadata
+    name: ${SERVICE_NAME:notification-service}
+    description: ${SERVICE_DESCRIPTION:Notification Service for NetworkPing Monitor}
+    version: ${SERVICE_VERSION:1.0.0}
+    
+    # API configuration
+    api:
+      # Base path for REST endpoints
+      base-path: ${API_BASE_PATH:/api/notifications}
+      
+      # API versioning
+      version: ${API_VERSION:v1}
+      enable-versioning: ${API_ENABLE_VERSIONING:true}
+      
+      # CORS settings
+      cors:
+        enabled: ${CORS_ENABLED:true}
+        allowed-origins: ${CORS_ALLOWED_ORIGINS:*}
+        allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS}
+        allowed-headers: ${CORS_ALLOWED_HEADERS:*}
+        max-age: ${CORS_MAX_AGE:3600}
+    
+    # Test endpoint configuration
+    test:
+      enabled: ${TEST_ENDPOINT_ENABLED:true}
+      message: ${TEST_MESSAGE:This is a test notification from the NetworkPing Monitor system.}
+      subject: ${TEST_SUBJECT:Test Notification}
+      
+    # Service behavior
+    behavior:
+      # Startup behavior
+      fail-on-startup-error: ${FAIL_ON_STARTUP_ERROR:true}
+      
+      # Shutdown behavior
+      graceful-shutdown-timeout: ${GRACEFUL_SHUTDOWN_TIMEOUT:30}
+      
+    # Integration settings
+    integration:
+      # Event publishing
+      publish-events: ${PUBLISH_EVENTS:true}
+      
+      # Database operations
+      save-notification-history: ${SAVE_NOTIFICATION_HISTORY:true}
+      
+      # Metrics collection
+      collect-metrics: ${COLLECT_METRICS:true}

@@ -1,0 +1,33 @@
+# Database Configuration
+spring:
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/support_search_db}
+    username: ${DB_USER:support_search_user}
+    password: ${DB_PASSWORD:support_search_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+      minimum-idle: ${DB_MIN_IDLE:2}
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:30000}
+      idle-timeout: ${DB_IDLE_TIMEOUT:600000}
+      max-lifetime: ${DB_MAX_LIFETIME:1800000}
+      pool-name: SearchServiceHikariPool
+  
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: ${JPA_FORMAT_SQL:false}
+        show_sql: ${JPA_SHOW_SQL:false}
+        use_sql_comments: ${JPA_USE_SQL_COMMENTS:false}
+        jdbc:
+          batch_size: ${JPA_BATCH_SIZE:25}
+        order_inserts: true
+        order_updates: true
+    open-in-view: false
+
+# Database Admin Configuration (for initialization)
+DB_ADMIN_USER: ${DB_ADMIN_USER:postgres}
+DB_ADMIN_PASSWORD: ${DB_ADMIN_PASSWORD:postgres}

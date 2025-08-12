@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.thatworked.support.common.logging.config.LoggingConfiguration
+
+# Also register for bootstrap context
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+io.thatworked.support.common.logging.config.LoggingConfiguration

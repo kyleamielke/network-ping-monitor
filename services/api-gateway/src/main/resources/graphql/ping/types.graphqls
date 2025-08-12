@@ -1,0 +1,57 @@
+type PingTarget {
+    deviceId: ID!
+    ipAddress: String
+    hostname: String
+    monitored: Boolean!
+    pingIntervalSeconds: Int!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type PingResult {
+    deviceId: ID!
+    timestamp: DateTime!
+    responseTimeMs: Int
+    success: Boolean!
+    errorMessage: String
+}
+
+type PingHistory {
+    deviceId: ID!
+    results: [PingResult!]!
+    statistics: PingStatistics
+}
+
+type PingStatistics {
+    totalPings: Int!
+    successfulPings: Int!
+    failedPings: Int!
+    successRate: Float!
+    averageResponseTime: Float
+    minResponseTime: Float
+    maxResponseTime: Float
+    uptime: Float!
+    packetLoss: Float!
+}
+
+type PingUpdate {
+    deviceId: ID!
+    timestamp: DateTime!
+    success: Boolean!
+    responseTimeMs: Int
+    previousStatus: DeviceStatusEnum
+    currentStatus: DeviceStatusEnum!
+}
+
+input TimeRangeInput {
+    minutes: Int
+    hours: Int
+    days: Int
+}
+
+enum TimeRange {
+    LAST_HOUR
+    LAST_24_HOURS
+    LAST_7_DAYS
+    LAST_30_DAYS
+}

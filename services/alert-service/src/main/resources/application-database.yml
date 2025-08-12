@@ -1,0 +1,55 @@
+# Database Configuration for Alert Service
+# This file contains database initialization and connection settings
+
+alert-service:
+  database:
+    # Database initialization settings
+    initialization:
+      # Enable automatic database creation
+      enabled: ${DB_INIT_ENABLED:true}
+      
+      # Database name
+      database-name: ${DB_INIT_DATABASE_NAME:support_alert_db}
+      
+      # Database user credentials
+      username: ${DB_INIT_USERNAME:support_alert_user}
+      password: ${DB_INIT_PASSWORD:alert_secure_pass_2024}
+      
+      # Admin credentials for database creation
+      admin-username: ${DB_INIT_ADMIN_USERNAME:tsdbadmin}
+      admin-password: ${DB_INIT_ADMIN_PASSWORD:devpassword}
+      
+      # Schema management
+      create-schema: ${DB_INIT_CREATE_SCHEMA:true}
+      schema-name: ${DB_INIT_SCHEMA_NAME:alerts}
+      
+      # Index creation
+      create-indexes: ${DB_INIT_CREATE_INDEXES:true}
+      
+    # Connection pool settings
+    connection-pool:
+      # Pool size configuration
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
+      minimum-idle: ${DB_POOL_MIN_IDLE:5}
+      
+      # Timeout settings (in milliseconds)
+      connection-timeout: ${DB_POOL_CONNECTION_TIMEOUT:30000}
+      idle-timeout: ${DB_POOL_IDLE_TIMEOUT:600000}
+      max-lifetime: ${DB_POOL_MAX_LIFETIME:1800000}
+      
+      # Validation
+      validation-timeout: ${DB_POOL_VALIDATION_TIMEOUT:5000}
+      leak-detection-threshold: ${DB_POOL_LEAK_DETECTION:60000}
+    
+    # Query configuration
+    query:
+      # Query timeout (in seconds)
+      timeout: ${DB_QUERY_TIMEOUT:30}
+      
+      # Fetch size for large result sets
+      fetch-size: ${DB_QUERY_FETCH_SIZE:1000}
+      
+      # Enable query logging
+      log-queries: ${DB_QUERY_LOG_ENABLED:false}
+      log-slow-queries: ${DB_QUERY_LOG_SLOW_ENABLED:true}
+      slow-query-threshold-ms: ${DB_QUERY_SLOW_THRESHOLD:1000}

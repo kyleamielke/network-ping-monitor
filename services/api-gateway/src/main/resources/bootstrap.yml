@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    consul:
+      host: consul
+      port: 8500
+      discovery:
+        enabled: true
+  config:
+    import: optional:classpath:logging-config.yml

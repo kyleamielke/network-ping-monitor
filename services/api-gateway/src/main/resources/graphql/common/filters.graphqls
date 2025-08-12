@@ -1,0 +1,18 @@
+# Filter Types for Connection Queries
+
+input DeviceFilter {
+    name: String
+    ipAddress: String
+    type: String
+    online: Boolean
+    monitored: Boolean
+}
+
+input AlertFilter {
+    deviceId: ID
+    alertType: String
+    resolved: Boolean
+    acknowledged: Boolean
+    startDate: DateTime
+    endDate: DateTime
+}

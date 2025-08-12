@@ -1,0 +1,96 @@
+# Resilience Configuration for Notification Service
+# This file contains retry, timeout, and circuit breaker settings
+
+notification-service:
+  resilience:
+    # Retry configuration
+    retry:
+      # Email sending retries
+      email:
+        enabled: ${RETRY_EMAIL_ENABLED:true}
+        max-attempts: ${RETRY_EMAIL_MAX_ATTEMPTS:3}
+        initial-delay-ms: ${RETRY_EMAIL_INITIAL_DELAY:1000}
+        multiplier: ${RETRY_EMAIL_MULTIPLIER:2}
+        max-delay-ms: ${RETRY_EMAIL_MAX_DELAY:10000}
+        
+      # Kafka publishing retries
+      kafka:
+        enabled: ${RETRY_KAFKA_ENABLED:true}
+        max-attempts: ${RETRY_KAFKA_MAX_ATTEMPTS:3}
+        initial-delay-ms: ${RETRY_KAFKA_INITIAL_DELAY:500}
+        multiplier: ${RETRY_KAFKA_MULTIPLIER:2}
+        max-delay-ms: ${RETRY_KAFKA_MAX_DELAY:5000}
+        
+      # Database operation retries
+      database:
+        enabled: ${RETRY_DATABASE_ENABLED:true}
+        max-attempts: ${RETRY_DATABASE_MAX_ATTEMPTS:3}
+        initial-delay-ms: ${RETRY_DATABASE_INITIAL_DELAY:100}
+        multiplier: ${RETRY_DATABASE_MULTIPLIER:2}
+        max-delay-ms: ${RETRY_DATABASE_MAX_DELAY:2000}
+    
+    # Circuit breaker configuration
+    circuit-breaker:
+      # Email service circuit breaker
+      email:
+        enabled: ${CB_EMAIL_ENABLED:true}
+        failure-threshold: ${CB_EMAIL_FAILURE_THRESHOLD:5}
+        success-threshold: ${CB_EMAIL_SUCCESS_THRESHOLD:3}
+        delay-ms: ${CB_EMAIL_DELAY:30000}
+        
+      # External webhook circuit breaker
+      webhook:
+        enabled: ${CB_WEBHOOK_ENABLED:true}
+        failure-threshold: ${CB_WEBHOOK_FAILURE_THRESHOLD:3}
+        success-threshold: ${CB_WEBHOOK_SUCCESS_THRESHOLD:2}
+        delay-ms: ${CB_WEBHOOK_DELAY:60000}
+    
+    # Timeout configuration
+    timeout:
+      # Email operations
+      email:
+        connect-ms: ${TIMEOUT_EMAIL_CONNECT:5000}
+        read-ms: ${TIMEOUT_EMAIL_READ:5000}
+        write-ms: ${TIMEOUT_EMAIL_WRITE:5000}
+        overall-ms: ${TIMEOUT_EMAIL_OVERALL:15000}
+        
+      # Database operations
+      database:
+        query-ms: ${TIMEOUT_DATABASE_QUERY:5000}
+        transaction-ms: ${TIMEOUT_DATABASE_TRANSACTION:10000}
+        
+      # Template processing
+      template:
+        processing-ms: ${TIMEOUT_TEMPLATE_PROCESSING:5000}
+        
+      # HTTP/webhook calls
+      http:
+        connect-ms: ${TIMEOUT_HTTP_CONNECT:3000}
+        read-ms: ${TIMEOUT_HTTP_READ:5000}
+        overall-ms: ${TIMEOUT_HTTP_OVERALL:10000}
+    
+    # Bulkhead configuration (thread pool isolation)
+    bulkhead:
+      # Email sending thread pool
+      email:
+        max-concurrent-calls: ${BULKHEAD_EMAIL_MAX_CALLS:10}
+        max-wait-duration-ms: ${BULKHEAD_EMAIL_MAX_WAIT:5000}
+        
+      # Webhook calls thread pool
+      webhook:
+        max-concurrent-calls: ${BULKHEAD_WEBHOOK_MAX_CALLS:5}
+        max-wait-duration-ms: ${BULKHEAD_WEBHOOK_MAX_WAIT:2000}
+    
+    # Rate limiting
+    rate-limiter:
+      # Email sending rate limit
+      email:
+        enabled: ${RATE_LIMITER_EMAIL_ENABLED:true}
+        calls-per-second: ${RATE_LIMITER_EMAIL_CPS:10}
+        timeout-duration-ms: ${RATE_LIMITER_EMAIL_TIMEOUT:5000}
+        
+      # Overall notification rate limit
+      global:
+        enabled: ${RATE_LIMITER_GLOBAL_ENABLED:true}
+        calls-per-second: ${RATE_LIMITER_GLOBAL_CPS:50}
+        timeout-duration-ms: ${RATE_LIMITER_GLOBAL_TIMEOUT:1000}

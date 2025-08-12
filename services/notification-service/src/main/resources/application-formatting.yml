@@ -1,0 +1,56 @@
+# Formatting Configuration for Notification Service
+# This file contains date/time formatting and other display formatting settings
+
+notification-service:
+  formatting:
+    # Date and time formatting
+    datetime:
+      # Timestamp pattern for display
+      timestamp-pattern: ${TIMESTAMP_PATTERN:yyyy-MM-dd HH:mm:ss}
+      
+      # Timezone for display
+      display-timezone: ${DISPLAY_TIMEZONE:UTC}
+      
+      # Date patterns
+      date-pattern: ${DATE_PATTERN:yyyy-MM-dd}
+      time-pattern: ${TIME_PATTERN:HH:mm:ss}
+      
+      # Relative time display
+      use-relative-time: ${USE_RELATIVE_TIME:true}
+      relative-time-threshold-minutes: ${RELATIVE_TIME_THRESHOLD_MINUTES:60}
+    
+    # Duration formatting
+    duration:
+      # Threshold for showing hours vs minutes
+      hours-threshold-minutes: ${DURATION_HOURS_THRESHOLD:60}
+      
+      # Threshold for showing days vs hours
+      days-threshold-hours: ${DURATION_DAYS_THRESHOLD:24}
+      
+      # Format style (COMPACT, FULL, HUMAN_READABLE)
+      format-style: ${DURATION_FORMAT_STYLE:HUMAN_READABLE}
+      
+      # Include seconds in duration display
+      include-seconds: ${DURATION_INCLUDE_SECONDS:false}
+    
+    # Number formatting
+    numbers:
+      # Decimal places for response times
+      response-time-decimals: ${RESPONSE_TIME_DECIMALS:2}
+      
+      # Decimal places for percentages
+      percentage-decimals: ${PERCENTAGE_DECIMALS:1}
+      
+      # Use grouping separator (e.g., 1,000)
+      use-grouping: ${NUMBER_USE_GROUPING:true}
+    
+    # Text formatting
+    text:
+      # Maximum length for device names in notifications
+      max-device-name-length: ${MAX_DEVICE_NAME_LENGTH:50}
+      
+      # Truncation indicator
+      truncation-indicator: ${TRUNCATION_INDICATOR:...}
+      
+      # Case formatting for headers
+      header-case: ${HEADER_CASE:TITLE_CASE}

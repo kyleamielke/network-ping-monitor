@@ -1,0 +1,71 @@
+package io.thatworked.support.gateway.client;
+
+import io.thatworked.support.common.logging.StructuredLogger;
+import io.thatworked.support.common.logging.factory.StructuredLoggerFactory;
+import io.thatworked.support.gateway.dto.dashboard.DeviceStatusDTO;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Component
+public class DashboardCacheServiceFallbackFactory implements FallbackFactory<DashboardCacheServiceClient> {
+    
+    private final StructuredLogger logger;
+    
+    public DashboardCacheServiceFallbackFactory(StructuredLoggerFactory loggerFactory) {
+        this.logger = loggerFactory.getLogger(DashboardCacheServiceFallbackFactory.class);
+    }
+    
+    @Override
+    public DashboardCacheServiceClient create(Throwable cause) {
+        return new DashboardCacheServiceClient() {
+            
+            @Override
+            public DeviceStatusDTO getDeviceStatus(UUID deviceId) {
+                logger.with("operation", "getDeviceStatus")
+                      .with("deviceId", deviceId)
+                      .error("Dashboard cache service unavailable", cause);
+                return null;
+            }
+            
+            @Override
+            public List<DeviceStatusDTO> getAllDeviceStatuses() {
+                logger.with("operation", "getAllDeviceStatuses")
+                      .error("Dashboard cache service unavailable", cause);
+                return new ArrayList<>();
+            }
+            
+            @Override
+            public List<DeviceStatusDTO> getOnlineDevices() {
+                logger.with("operation", "getOnlineDevices")
+                      .error("Dashboard cache service unavailable", cause);
+                return new ArrayList<>();
+            }
+            
+            @Override
+            public List<DeviceStatusDTO> getOfflineDevices() {
+                logger.with("operation", "getOfflineDevices")
+                      .error("Dashboard cache service unavailable", cause);
+                return new ArrayList<>();
+            }
+            
+            @Override
+            public Boolean isDeviceOnline(UUID deviceId) {
+                logger.with("operation", "isDeviceOnline")
+                      .with("deviceId", deviceId)
+                      .error("Dashboard cache service unavailable", cause);
+                return null;
+            }
+            
+            @Override
+            public Integer getCacheSize() {
+                logger.with("operation", "getCacheSize")
+                      .error("Dashboard cache service unavailable", cause);
+                return 0;
+            }
+        };
+    }
+}

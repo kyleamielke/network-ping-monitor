@@ -1,0 +1,44 @@
+# Main Application Configuration
+spring:
+  config:
+    import:
+      - classpath:application-service.yml
+      - classpath:application-database.yml
+      - classpath:application-kafka.yml
+      - classpath:application-search.yml
+      - classpath:application-observability.yml
+
+# Default Profile
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+
+# Development Profile
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    show-sql: true
+logging:
+  level:
+    io.thatworked.support.search: DEBUG
+
+# Production Profile
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    show-sql: false
+logging:
+  level:
+    io.thatworked.support.search: INFO
+management:
+  endpoint:
+    health:
+      show-details: when-authorized

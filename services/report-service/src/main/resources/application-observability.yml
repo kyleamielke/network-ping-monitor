@@ -1,0 +1,96 @@
+# Observability configuration
+# Configures monitoring, metrics, logging, and health checks
+
+observability:
+  # Metrics configuration
+  metrics:
+    enabled: ${METRICS_ENABLED:true}
+    
+    # JVM metrics
+    jvm:
+      enabled: ${METRICS_JVM_ENABLED:true}
+      
+    # HTTP metrics
+    http:
+      enabled: ${METRICS_HTTP_ENABLED:true}
+      percentiles: [0.5, 0.95, 0.99]
+      histogram: true
+      
+    # Database metrics
+    database:
+      enabled: ${METRICS_DB_ENABLED:true}
+      
+    # Kafka metrics
+    kafka:
+      enabled: ${METRICS_KAFKA_ENABLED:true}
+      
+    # Custom business metrics
+    business:
+      reports-generated: true
+      reports-failed: true
+      generation-duration: true
+      storage-usage: true
+      
+  # Tracing configuration
+  tracing:
+    enabled: ${TRACING_ENABLED:false}
+    sampling-rate: ${TRACING_SAMPLING_RATE:0.1}
+    endpoint: ${TRACING_ENDPOINT:http://localhost:9411}
+    
+  # Health check configuration
+  health:
+    # Database health
+    database:
+      enabled: true
+      timeout-seconds: 5
+      
+    # Kafka health
+    kafka:
+      enabled: true
+      timeout-seconds: 10
+      
+    # Disk space health
+    disk:
+      enabled: true
+      threshold-percent: 90
+      
+    # Custom health indicators
+    custom:
+      report-storage:
+        enabled: true
+        path: ${REPORT_STORAGE_PATH:/tmp/reports}
+        
+  # Logging configuration
+  logging:
+    # Log patterns
+    pattern:
+      console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p [%15.15t] %-40.40logger{39} : %m%n%ex"
+      file: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5p [%15.15t] %-40.40logger{39} : %m%n%ex"
+      
+    # File logging
+    file:
+      enabled: ${LOGGING_FILE_ENABLED:false}
+      path: ${LOGGING_FILE_PATH:/var/log/report-service}
+      name: ${LOGGING_FILE_NAME:report-service.log}
+      max-size: ${LOGGING_FILE_MAX_SIZE:10MB}
+      max-history: ${LOGGING_FILE_MAX_HISTORY:30}
+      total-size-cap: ${LOGGING_FILE_TOTAL_SIZE:1GB}
+      
+    # Log levels by package
+    levels:
+      io.thatworked.support.report: ${LOG_LEVEL_REPORT:INFO}
+      io.thatworked.support.report.domain: ${LOG_LEVEL_DOMAIN:DEBUG}
+      io.thatworked.support.report.application: ${LOG_LEVEL_APPLICATION:DEBUG}
+      io.thatworked.support.report.infrastructure: ${LOG_LEVEL_INFRASTRUCTURE:INFO}
+      io.thatworked.support.report.api: ${LOG_LEVEL_API:INFO}
+      
+  # Monitoring alerts
+  alerts:
+    enabled: ${MONITORING_ALERTS_ENABLED:false}
+    webhook-url: ${MONITORING_WEBHOOK_URL:}
+    
+    # Alert thresholds
+    thresholds:
+      error-rate: ${ALERT_ERROR_RATE:0.05}
+      response-time-ms: ${ALERT_RESPONSE_TIME:5000}
+      heap-usage-percent: ${ALERT_HEAP_USAGE:90}

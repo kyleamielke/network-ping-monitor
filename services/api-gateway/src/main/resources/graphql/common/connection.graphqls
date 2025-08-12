@@ -1,0 +1,54 @@
+# Relay Cursor Connection Types
+
+interface Node {
+    id: ID!
+}
+
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+    endCursor: String
+}
+
+interface Edge {
+    cursor: String!
+}
+
+interface Connection {
+    edges: [Edge!]!
+    pageInfo: PageInfo!
+    totalCount: Int
+}
+
+# Device Connection Types
+type DeviceEdge implements Edge {
+    cursor: String!
+    node: Device!
+}
+
+type DeviceConnection implements Connection {
+    edges: [DeviceEdge!]!
+    pageInfo: PageInfo!
+    totalCount: Int
+}
+
+# Alert Connection Types
+type AlertEdge implements Edge {
+    cursor: String!
+    node: Alert!
+}
+
+type AlertConnection implements Connection {
+    edges: [AlertEdge!]!
+    pageInfo: PageInfo!
+    totalCount: Int
+}
+
+# Connection Input Arguments
+input ConnectionArgs {
+    first: Int
+    after: String
+    last: Int
+    before: String
+}

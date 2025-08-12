@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: api-gateway-test
+  
+  # Disable service discovery for tests
+  cloud:
+    consul:
+      enabled: false
+      discovery:
+        enabled: false
+  
+  # Use in-memory database for tests if needed
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-start: false  # Don't start Kafka consumers in tests
+
+# Disable external service calls in tests
+external:
+  services:
+    device-service:
+      url: http://localhost:8081
+    ping-service:
+      url: http://localhost:8082
+    alert-service:
+      url: http://localhost:8084
+    notification-service:
+      url: http://localhost:8083
+    report-service:
+      url: http://localhost:8085
+
+# GraphQL
+graphql:
+  graphiql:
+    enabled: true

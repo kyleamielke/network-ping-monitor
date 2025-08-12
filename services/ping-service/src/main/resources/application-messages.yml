@@ -1,0 +1,16 @@
+ping:
+  messages:
+    errors:
+      ping-target-not-found: "Ping target not found for device: {0}"
+      invalid-ping-interval: "Ping interval must be between {0} and {1} seconds"
+      device-already-monitored: "Device {0} is already being monitored"
+      device-not-monitored: "Device {0} is not currently being monitored"
+      ping-execution-failed: "Failed to execute ping for device {0}: {1}"
+      max-targets-exceeded: "Maximum number of ping targets ({0}) exceeded"
+    
+    info:
+      ping-target-created: "Created ping target for device {0} with IP {1}"
+      monitoring-started: "Started monitoring device {0}"
+      monitoring-stopped: "Stopped monitoring device {0}"
+      device-recovered: "Device {0} has recovered and is responding to pings"
+      device-down: "Device {0} is not responding to pings"

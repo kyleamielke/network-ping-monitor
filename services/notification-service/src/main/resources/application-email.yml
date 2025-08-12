@@ -1,0 +1,45 @@
+# Email Configuration for Notification Service
+# This file contains all email-related settings including SMTP and sender configurations
+
+notification-service:
+  email:
+    # Email sender configuration
+    enabled: ${NOTIFICATION_EMAIL_ENABLED:true}
+    from: ${NOTIFICATION_EMAIL_FROM:alerts@networkmonitor.local}
+    default-recipient: ${NOTIFICATION_EMAIL_DEFAULT_RECIPIENT:admin@company.com}
+    
+    # Alert recipient configuration
+    alert-recipient: ${NOTIFICATION_TO_EMAIL:alerts@company.com}
+    
+    # Character encoding
+    charset: ${NOTIFICATION_EMAIL_CHARSET:UTF-8}
+    
+    # HTML email settings
+    html-enabled: ${NOTIFICATION_EMAIL_HTML_ENABLED:true}
+    
+    # Email content settings
+    subject-prefix: ${NOTIFICATION_EMAIL_SUBJECT_PREFIX:[NetworkPing Monitor]}
+    include-timestamp: ${NOTIFICATION_EMAIL_INCLUDE_TIMESTAMP:true}
+    
+    # SMTP configuration (main settings in application.yml)
+    smtp:
+      # Connection pool settings
+      connection-pool-size: ${SMTP_CONNECTION_POOL_SIZE:5}
+      
+      # Timeout configurations (in milliseconds)
+      connection-timeout: ${SMTP_CONNECTION_TIMEOUT:5000}
+      read-timeout: ${SMTP_READ_TIMEOUT:5000}
+      write-timeout: ${SMTP_WRITE_TIMEOUT:5000}
+      
+      # Debug settings
+      debug: ${SMTP_DEBUG:false}
+      
+    # Email validation
+    validation:
+      # Maximum lengths
+      max-recipient-length: ${EMAIL_MAX_RECIPIENT_LENGTH:255}
+      max-subject-length: ${EMAIL_MAX_SUBJECT_LENGTH:500}
+      max-message-length: ${EMAIL_MAX_MESSAGE_LENGTH:50000}
+      
+      # Recipient validation pattern
+      recipient-pattern: ${EMAIL_RECIPIENT_PATTERN:^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\.[A-Za-z]{2,})$}

@@ -1,0 +1,168 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    default-property-inclusion: non_null
+  
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+    consumer:
+      group-id: api-gateway
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: latest
+    topics:
+      alert-lifecycle-events: alert-lifecycle-events
+      ping-monitoring-events: ping-monitoring-events
+      device-events: device-events
+    
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+    path: /graphql
+    websocket:
+      path: /graphql-ws
+
+gateway:
+  error:
+    debug-mode: true  # Set to false in production to hide sensitive error details
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env,circuitbreakers,retries,timelimiters
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+    circuitbreakers:
+      enabled: true
+    retries:
+      enabled: true
+    timelimiters:
+      enabled: true
+  health:
+    defaults:
+      enabled: true
+    diskspace:
+      enabled: true
+    ping:
+      enabled: true
+    circuitbreakers:
+      enabled: true
+  metrics:
+    distribution:
+      percentiles-histogram:
+        resilience4j.circuitbreaker.calls: true
+        resilience4j.retry.calls: true
+        resilience4j.timelimiter.calls: true
+
+feign:
+  circuitbreaker:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        
+# Resilience4j Configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      device-service:
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        slidingWindowSize: 10
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+      ping-service:
+        failureRateThreshold: 60
+        minimumNumberOfCalls: 3
+        slidingWindowSize: 8
+        waitDurationInOpenState: 20s
+        permittedNumberOfCallsInHalfOpenState: 2
+      alert-service:
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        slidingWindowSize: 10
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+      notification-service:
+        failureRateThreshold: 70
+        minimumNumberOfCalls: 3
+        slidingWindowSize: 6
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 2
+  retry:
+    instances:
+      device-service:
+        maxAttempts: 3
+        waitDuration: 500ms
+        exponentialBackoffMultiplier: 2
+      ping-service:
+        maxAttempts: 2
+        waitDuration: 300ms
+        exponentialBackoffMultiplier: 1.5
+      alert-service:
+        maxAttempts: 3
+        waitDuration: 500ms
+        exponentialBackoffMultiplier: 2
+  timelimiter:
+    instances:
+      device-service:
+        timeoutDuration: 10s
+      ping-service:
+        timeoutDuration: 5s
+      alert-service:
+        timeoutDuration: 8s
+
+services:
+  device:
+    url: ${DEVICE_SERVICE_URL:http://device-service:8081}
+  ping:
+    url: ${PING_SERVICE_URL:http://ping-service:8082}
+  alert:
+    url: ${ALERT_SERVICE_URL:http://alert-service:8084}
+  notification:
+    url: ${NOTIFICATION_SERVICE_URL:http://notification-service:8083}
+  report:
+    url: ${REPORT_SERVICE_URL:http://report-service:8085}
+  search:
+    url: ${SEARCH_SERVICE_URL:http://search-service:8086}
+
+# CORS Configuration
+cors:
+  allowed-origins:
+    - http://localhost:3000      # React dev server
+    - http://localhost:3001      # Alternative React port
+    - http://localhost:8081      # Alternative frontend port
+    - http://127.0.0.1:3000      # Localhost alternative
+    - https://monitor.thatworked.io  # Production frontend
+    - https://api.thatworked.io      # Production API
+    - http://stwvmcode01:3000        # Internal hostname
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+  max-age: 3600
+
+logging:
+  level:
+    io.thatworked.support.gateway: INFO
+    org.springframework.web.cors: DEBUG
+    org.springframework.web.servlet: DEBUG
+    org.springframework.graphql: DEBUG
+    org.springframework.web.socket: DEBUG
+    root: WARN

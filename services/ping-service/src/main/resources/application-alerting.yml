@@ -1,0 +1,5 @@
+ping:
+  alerting:
+    enabled: true
+    failure-threshold: 3
+    recovery-threshold: 2

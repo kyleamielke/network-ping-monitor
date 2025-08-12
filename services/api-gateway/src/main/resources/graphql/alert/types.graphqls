@@ -1,0 +1,29 @@
+type Alert {
+    id: ID!
+    deviceId: ID!
+    deviceName: String!
+    alertType: AlertType!
+    message: String!
+    timestamp: DateTime!
+    resolved: Boolean!
+    resolvedAt: DateTime
+    acknowledged: Boolean!
+    acknowledgedAt: DateTime
+    acknowledgedBy: String
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+input CreateAlertInput {
+    deviceId: ID!
+    alertType: AlertType!
+    message: String!
+}
+
+enum AlertType {
+    DEVICE_DOWN
+    DEVICE_RECOVERED
+    HIGH_RESPONSE_TIME
+    PACKET_LOSS
+    CUSTOM
+}

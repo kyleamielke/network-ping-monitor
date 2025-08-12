@@ -1,0 +1,48 @@
+# Service Configuration for Alert Service
+# This file contains service metadata, API settings, and test configurations
+
+alert-service:
+  service:
+    # Service metadata
+    name: ${SERVICE_NAME:alert-service}
+    version: ${SERVICE_VERSION:1.0.0}
+    description: ${SERVICE_DESCRIPTION:Alert management and lifecycle service for NetworkPing Monitor}
+    
+    # API configuration
+    api:
+      # Base path for REST endpoints
+      base-path: ${API_BASE_PATH:/api/v1/alerts}
+      
+      # API versioning
+      version: ${API_VERSION:v1}
+      
+      # CORS settings
+      cors:
+        allowed-origins: ${CORS_ALLOWED_ORIGINS:*}
+        allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS}
+        allowed-headers: ${CORS_ALLOWED_HEADERS:*}
+        max-age: ${CORS_MAX_AGE:3600}
+      
+      # Pagination defaults
+      pagination:
+        default-page: ${PAGINATION_DEFAULT_PAGE:0}
+        default-page-size: ${PAGINATION_DEFAULT_PAGE_SIZE:20}
+        max-page-size: ${PAGINATION_MAX_PAGE_SIZE:100}
+        default-sort-field: ${PAGINATION_DEFAULT_SORT_FIELD:timestamp}
+        default-sort-direction: ${PAGINATION_DEFAULT_SORT_DIRECTION:DESC}
+    
+    # Test configuration
+    test:
+      # Test data settings
+      test-data-enabled: ${TEST_DATA_ENABLED:false}
+      test-device-count: ${TEST_DEVICE_COUNT:10}
+      test-alert-count: ${TEST_ALERT_COUNT:50}
+      
+    # Monitoring
+    monitoring:
+      # Health check settings
+      health-check-interval: ${HEALTH_CHECK_INTERVAL:30s}
+      
+      # Metrics collection
+      metrics-enabled: ${METRICS_ENABLED:true}
+      metrics-prefix: ${METRICS_PREFIX:alert_service}

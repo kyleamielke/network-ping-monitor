@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: ping-service
+  cloud:
+    config:
+      enabled: false
+      fail-fast: false

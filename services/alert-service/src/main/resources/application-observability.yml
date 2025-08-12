@@ -1,0 +1,93 @@
+# Observability Configuration for Alert Service
+# This file contains monitoring, metrics, tracing, and health check settings
+
+alert-service:
+  observability:
+    # Metrics configuration
+    metrics:
+      # Enable metrics collection
+      enabled: ${METRICS_ENABLED:true}
+      
+      # Metric export interval (seconds)
+      export-interval: ${METRICS_EXPORT_INTERVAL:60}
+      
+      # Custom metrics
+      custom:
+        # Track alert counts by severity
+        track-by-severity: ${METRICS_TRACK_BY_SEVERITY:true}
+        
+        # Track alert counts by state
+        track-by-state: ${METRICS_TRACK_BY_STATE:true}
+        
+        # Track processing times
+        track-processing-time: ${METRICS_TRACK_PROCESSING_TIME:true}
+        
+        # Track event processing metrics
+        track-event-processing: ${METRICS_TRACK_EVENT_PROCESSING:true}
+      
+      # Metric tags
+      tags:
+        service: ${METRICS_TAG_SERVICE:alert-service}
+        environment: ${METRICS_TAG_ENVIRONMENT:dev}
+        region: ${METRICS_TAG_REGION:us-east-1}
+    
+    # Distributed tracing configuration
+    tracing:
+      # Enable tracing
+      enabled: ${TRACING_ENABLED:true}
+      
+      # Sampling rate (0.0 to 1.0)
+      sampling-rate: ${TRACING_SAMPLING_RATE:1.0}
+      
+      # Trace ID format
+      trace-id-format: ${TRACING_ID_FORMAT:128-bit}
+      
+      # Span tags
+      tags:
+        alert.severity: ${TRACING_TAG_SEVERITY:true}
+        alert.type: ${TRACING_TAG_TYPE:true}
+        device.id: ${TRACING_TAG_DEVICE_ID:true}
+    
+    # Health check configuration
+    health:
+      # Database health check
+      database:
+        enabled: ${HEALTH_DATABASE_ENABLED:true}
+        timeout-ms: ${HEALTH_DATABASE_TIMEOUT:5000}
+        
+      # Kafka health check
+      kafka:
+        enabled: ${HEALTH_KAFKA_ENABLED:true}
+        timeout-ms: ${HEALTH_KAFKA_TIMEOUT:5000}
+        
+      # Custom health indicators
+      custom:
+        # Check alert processing
+        alert-processing: ${HEALTH_ALERT_PROCESSING:true}
+        
+        # Check cleanup job
+        cleanup-job: ${HEALTH_CLEANUP_JOB:true}
+    
+    # Logging configuration
+    logging:
+      # Structured logging
+      structured:
+        enabled: ${LOGGING_STRUCTURED_ENABLED:true}
+        format: ${LOGGING_STRUCTURED_FORMAT:JSON}
+        
+      # Log levels by category
+      levels:
+        alert: ${LOG_LEVEL_ALERT:INFO}
+        event-processing: ${LOG_LEVEL_EVENT_PROCESSING:INFO}
+        cleanup: ${LOG_LEVEL_CLEANUP:INFO}
+        
+      # Performance logging
+      performance:
+        enabled: ${LOGGING_PERFORMANCE_ENABLED:true}
+        slow-threshold-ms: ${LOGGING_SLOW_THRESHOLD:1000}
+        
+      # Audit logging
+      audit:
+        enabled: ${LOGGING_AUDIT_ENABLED:true}
+        include-user: ${LOGGING_AUDIT_USER:true}
+        include-changes: ${LOGGING_AUDIT_CHANGES:true}

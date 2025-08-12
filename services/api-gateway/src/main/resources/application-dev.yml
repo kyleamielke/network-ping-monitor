@@ -1,0 +1,23 @@
+# Development profile configuration
+# This is loaded when SPRING_PROFILES_ACTIVE includes 'dev'
+
+logging:
+  level:
+    io.thatworked.support.gateway: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+    io.github.resilience4j: DEBUG
+
+# More aggressive circuit breaker settings for dev testing
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 5          # Smaller window for faster testing
+        minimumNumberOfCalls: 3       # Trigger circuit breaker faster
+        failureRateThreshold: 50      # Same as production
+        waitDurationInOpenState: 10s  # Shorter wait time for dev
+        slowCallDurationThreshold: 1s # Identify slow calls faster
+        slowCallRateThreshold: 50     # Open circuit on 50% slow calls
+
+# Note: To use toxiproxy for testing, add 'toxiproxy' to active profiles
+# Example: SPRING_PROFILES_ACTIVE=dev,toxiproxy

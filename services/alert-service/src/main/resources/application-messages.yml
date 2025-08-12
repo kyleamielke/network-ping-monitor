@@ -1,0 +1,34 @@
+# Messages Configuration for Alert Service
+# This file contains all user-facing messages and error messages
+
+alert-service:
+  messages:
+    # Error messages
+    errors:
+      alert-not-found: "${ERROR_ALERT_NOT_FOUND:Alert not found with id: %s}"
+      device-max-alerts: "${ERROR_DEVICE_MAX_ALERTS:Device has reached maximum number of active alerts: %d}"
+      alert-already-acknowledged: ${ERROR_ALERT_ALREADY_ACK:Alert is already acknowledged}
+      alert-already-resolved: ${ERROR_ALERT_ALREADY_RESOLVED:Alert is already resolved}
+      validation-failed: ${ERROR_VALIDATION_FAILED:Request validation failed}
+      internal-server-error: ${ERROR_INTERNAL_SERVER:An unexpected error occurred}
+      
+    # API response messages
+    api:
+      alert-not-found-title: ${API_ALERT_NOT_FOUND_TITLE:Alert Not Found}
+      validation-failed-title: ${API_VALIDATION_FAILED_TITLE:Validation Failed}
+      internal-error-title: ${API_INTERNAL_ERROR_TITLE:Internal Server Error}
+      
+    # Success messages
+    success:
+      alert-created: ${SUCCESS_ALERT_CREATED:Alert created successfully}
+      alert-acknowledged: "${SUCCESS_ALERT_ACK:Alert acknowledged by %s}"
+      alert-resolved: "${SUCCESS_ALERT_RESOLVED:Alert resolved by %s}"
+      alert-deleted: ${SUCCESS_ALERT_DELETED:Alert deleted successfully}
+      alerts-cleaned: "${SUCCESS_ALERTS_CLEANED:Cleaned up %d resolved alerts}"
+      
+    # Default values
+    defaults:
+      acknowledged-by: ${DEFAULT_ACKNOWLEDGED_BY:System}
+      resolved-by: ${DEFAULT_RESOLVED_BY:System}
+      unknown-device: ${DEFAULT_UNKNOWN_DEVICE:Unknown Device}
+      unknown-user: ${DEFAULT_UNKNOWN_USER:Unknown User}

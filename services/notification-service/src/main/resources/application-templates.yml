@@ -1,0 +1,44 @@
+# Template Configuration for Notification Service
+# This file contains template mappings and template engine settings
+
+notification-service:
+  templates:
+    # Template name mappings for different notification types
+    mappings:
+      device-down: ${TEMPLATE_DEVICE_DOWN:device-down-alert}
+      device-recovered: ${TEMPLATE_DEVICE_RECOVERED:device-recovery-alert}
+      high-latency: ${TEMPLATE_HIGH_LATENCY:high-latency-alert}
+      packet-loss: ${TEMPLATE_PACKET_LOSS:packet-loss-alert}
+      test: ${TEMPLATE_TEST:test-notification}
+      
+    # Template engine configuration
+    engine:
+      # Cache templates in production
+      cache-enabled: ${TEMPLATE_CACHE_ENABLED:true}
+      cache-ttl-seconds: ${TEMPLATE_CACHE_TTL:3600}
+      
+      # Template location
+      prefix: ${TEMPLATE_PREFIX:classpath:/templates/}
+      suffix: ${TEMPLATE_SUFFIX:.html}
+      
+      # Encoding
+      encoding: ${TEMPLATE_ENCODING:UTF-8}
+      
+      # Mode (HTML, XML, TEXT, etc.)
+      mode: ${TEMPLATE_MODE:HTML}
+      
+    # Template processing settings
+    processing:
+      # Strict variable checking
+      strict-variables: ${TEMPLATE_STRICT_VARIABLES:false}
+      
+      # Maximum processing time (milliseconds)
+      max-processing-time: ${TEMPLATE_MAX_PROCESSING_TIME:5000}
+      
+    # Default template variables
+    defaults:
+      # Company/System information
+      system-name: ${TEMPLATE_DEFAULT_SYSTEM_NAME:NetworkPing Monitor}
+      company-name: ${TEMPLATE_DEFAULT_COMPANY_NAME:Your Company}
+      support-email: ${TEMPLATE_DEFAULT_SUPPORT_EMAIL:support@company.com}
+      support-phone: ${TEMPLATE_DEFAULT_SUPPORT_PHONE:1-800-SUPPORT}

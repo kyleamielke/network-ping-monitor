@@ -1,0 +1,49 @@
+# Kafka Configuration for Notification Service
+# This file contains all Kafka-related settings including consumer, producer, and topic configurations
+
+notification-service:
+  kafka:
+    # Topic configurations
+    topics:
+      # Events published by this service
+      notification-events: ${KAFKA_TOPIC_NOTIFICATION_EVENTS:notification-events}
+      
+      # Events consumed by this service
+      alert-lifecycle-events: ${KAFKA_TOPIC_ALERT_LIFECYCLE_EVENTS:alert-lifecycle-events}
+    
+    # Consumer configuration
+    consumer:
+      # Number of concurrent consumers
+      concurrency: ${KAFKA_CONSUMER_CONCURRENCY:3}
+      
+      # Consumer group ID is set in main application.yml
+      
+      # Offset management
+      auto-offset-reset: ${KAFKA_CONSUMER_AUTO_OFFSET_RESET:earliest}
+      enable-auto-commit: ${KAFKA_CONSUMER_ENABLE_AUTO_COMMIT:false}
+      
+      # Consumer-specific settings
+      max-poll-records: ${KAFKA_CONSUMER_MAX_POLL_RECORDS:500}
+      max-poll-interval-ms: ${KAFKA_CONSUMER_MAX_POLL_INTERVAL_MS:300000}
+      session-timeout-ms: ${KAFKA_CONSUMER_SESSION_TIMEOUT_MS:30000}
+      
+    # Producer configuration
+    producer:
+      # Acknowledgment configuration
+      acks: ${KAFKA_PRODUCER_ACKS:all}
+      
+      # Retry configuration
+      retries: ${KAFKA_PRODUCER_RETRIES:3}
+      retry-backoff-ms: ${KAFKA_PRODUCER_RETRY_BACKOFF_MS:100}
+      
+      # Batching configuration
+      batch-size: ${KAFKA_PRODUCER_BATCH_SIZE:16384}
+      linger-ms: ${KAFKA_PRODUCER_LINGER_MS:10}
+      buffer-memory: ${KAFKA_PRODUCER_BUFFER_MEMORY:33554432}
+      
+      # Compression
+      compression-type: ${KAFKA_PRODUCER_COMPRESSION_TYPE:snappy}
+      
+      # Timeout configurations
+      request-timeout-ms: ${KAFKA_PRODUCER_REQUEST_TIMEOUT_MS:30000}
+      delivery-timeout-ms: ${KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS:120000}

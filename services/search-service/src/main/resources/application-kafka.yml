@@ -1,0 +1,40 @@
+# Kafka Configuration
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:search-service-group}
+      auto-offset-reset: ${KAFKA_AUTO_OFFSET_RESET:earliest}
+      enable-auto-commit: ${KAFKA_ENABLE_AUTO_COMMIT:true}
+      auto-commit-interval: ${KAFKA_AUTO_COMMIT_INTERVAL:1000}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "io.thatworked.support.*"
+        spring.json.use.type.headers: false
+        session.timeout.ms: ${KAFKA_SESSION_TIMEOUT:30000}
+        max.poll.records: ${KAFKA_MAX_POLL_RECORDS:500}
+        max.poll.interval.ms: ${KAFKA_MAX_POLL_INTERVAL:300000}
+    
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: ${KAFKA_PRODUCER_ACKS:1}
+      retries: ${KAFKA_PRODUCER_RETRIES:3}
+      batch-size: ${KAFKA_PRODUCER_BATCH_SIZE:16384}
+      linger-ms: ${KAFKA_PRODUCER_LINGER_MS:1}
+      buffer-memory: ${KAFKA_PRODUCER_BUFFER_MEMORY:33554432}
+      compression-type: ${KAFKA_PRODUCER_COMPRESSION:none}
+    
+    listener:
+      ack-mode: ${KAFKA_LISTENER_ACK_MODE:record}
+      concurrency: ${KAFKA_LISTENER_CONCURRENCY:3}
+      poll-timeout: ${KAFKA_LISTENER_POLL_TIMEOUT:3000}
+
+# Kafka Topics
+kafka:
+  topics:
+    device-events: ${KAFKA_TOPIC_DEVICE_EVENTS:device-events}
+    alert-events: ${KAFKA_TOPIC_ALERT_EVENTS:alert-events}
+    report-events: ${KAFKA_TOPIC_REPORT_EVENTS:report-events}

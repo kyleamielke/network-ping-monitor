@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: device-service
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8888
+      fail-fast: false  # In development, set to true in production

@@ -1,0 +1,274 @@
+services:
+  consul:
+    image: hashicorp/consul:1.16.1
+    ports:
+      - "${CONSUL_PORT:-8500}:8500"
+      - "${CONSUL_DNS_PORT:-8600}:8600/udp"
+    command: "agent -server -bootstrap-expect=1 -ui -client=0.0.0.0"
+    env_file:
+      - ./env_files/consul.env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - support-network
+
+  kafka:
+    image: apache/kafka:3.7.0
+    ports:
+      - "${KAFKA_PORT:-29092}:29092"
+    env_file:
+      - ./env_files/kafka.env
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z kafka 9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - support-network
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    env_file:
+      - ./env_files/db.env
+    volumes:
+      - timescale-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - support-network
+
+  device-service:
+    build:
+      context: services/device-service
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${DEVICE_SERVICE_PORT:-8081}:8081"
+    env_file:
+      - ./env_files/db.env
+      - ./env_files/consul.env
+      - ./env_files/kafka.env
+      - ./services/device-service/.env
+    volumes:
+      - support-data:/app/data
+    depends_on:
+      consul:
+        condition: service_healthy
+      timescaledb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - support-network
+
+  ping-service:
+    build:
+      context: services/ping-service
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${PING_SERVICE_PORT:-8082}:8082"
+    env_file:
+      - ./env_files/db.env
+      - ./env_files/consul.env
+      - ./env_files/kafka.env
+      - ./services/ping-service/.env
+    volumes:
+      - support-data:/app/data
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    depends_on:
+      consul:
+        condition: service_healthy
+      timescaledb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - support-network
+
+  alert-service:
+    build:
+      context: services/alert-service
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${ALERT_SERVICE_PORT:-8084}:8084"
+    env_file:
+      - ./env_files/db.env
+      - ./env_files/consul.env
+      - ./env_files/kafka.env
+      - ./services/alert-service/.env
+    volumes:
+      - support-data:/app/data
+    depends_on:
+      consul:
+        condition: service_healthy
+      timescaledb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - support-network
+
+  notification-service:
+    build:
+      context: services/notification-service
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${NOTIFICATION_SERVICE_PORT:-8083}:8083"
+    env_file:
+      - ./env_files/consul.env
+      - ./env_files/kafka.env
+      - ./services/notification-service/.env
+    volumes:
+      - support-data:/app/data
+    depends_on:
+      consul:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - support-network
+
+  report-service:
+    build:
+      context: services/report-service
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${REPORT_SERVICE_PORT:-8085}:8085"
+    env_file:
+      - ./env_files/db.env
+      - ./env_files/consul.env
+      - ./services/report-service/.env
+    volumes:
+      - support-data:/app/data
+    depends_on:
+      consul:
+        condition: service_healthy
+      timescaledb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - support-network
+
+  search-service:
+    build:
+      context: services/search-service
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${SEARCH_SERVICE_PORT:-8086}:8086"
+    env_file:
+      - ./env_files/db.env
+      - ./env_files/consul.env
+      - ./env_files/kafka.env
+      - ./services/search-service/.env
+    volumes:
+      - support-data:/app/data
+    depends_on:
+      consul:
+        condition: service_healthy
+      timescaledb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - support-network
+
+  api-gateway:
+    build:
+      context: services/api-gateway
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${API_GATEWAY_PORT:-8080}:8080"
+    env_file:
+      - ./env_files/kafka.env
+      - ./env_files/consul.env
+      - ./services/api-gateway/.env
+    volumes:
+      - support-data:/app/data
+    depends_on:
+      consul:
+        condition: service_healthy
+      device-service:
+        condition: service_healthy
+      ping-service:
+        condition: service_healthy
+      alert-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - support-network
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    env_file:
+      - .env
+    networks:
+      - support-network
+    depends_on:
+      - api-gateway
+
+networks:
+  support-network:
+    driver: bridge
+
+volumes:
+  kafka-data:
+  timescale-data:
+  support-data:

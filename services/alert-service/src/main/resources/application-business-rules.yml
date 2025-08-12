@@ -1,0 +1,75 @@
+# Business Rules Configuration for Alert Service
+# This file contains all business logic rules and thresholds
+
+alert-service:
+  rules:
+    # Device monitoring rules
+    device-down:
+      # Number of consecutive failures before triggering alert
+      failure-threshold: ${ALERT_DEVICE_DOWN_THRESHOLD:3}
+      
+      # Time window for failure counting (in seconds)
+      failure-window: ${ALERT_DEVICE_DOWN_WINDOW:300}
+      
+      # Severity level for device down alerts
+      severity: ${ALERT_DEVICE_DOWN_SEVERITY:HIGH}
+    
+    device-recovery:
+      # Number of consecutive successes before clearing alert
+      success-threshold: ${ALERT_DEVICE_RECOVERY_THRESHOLD:2}
+      
+      # Time window for success counting (in seconds)
+      success-window: ${ALERT_DEVICE_RECOVERY_WINDOW:300}
+    
+    # Alert lifecycle rules
+    lifecycle:
+      # Maximum active alerts per device
+      max-active-alerts-per-device: ${ALERT_MAX_ACTIVE_PER_DEVICE:10}
+      
+      # Alert retention period (in days)
+      retention-period-days: ${ALERT_RETENTION_DAYS:30}
+      
+      # Auto-acknowledge settings
+      auto-acknowledge:
+        enabled: ${ALERT_AUTO_ACKNOWLEDGE_ENABLED:false}
+        after-hours: ${ALERT_AUTO_ACKNOWLEDGE_HOURS:24}
+      
+      # Auto-resolve settings
+      auto-resolve:
+        enabled: ${ALERT_AUTO_RESOLVE_ENABLED:true}
+        on-recovery: ${ALERT_AUTO_RESOLVE_ON_RECOVERY:true}
+    
+    # Alert cleanup configuration
+    cleanup:
+      # Retention period for resolved alerts (in days)
+      resolved-alerts-retention-days: ${ALERT_CLEANUP_RETENTION_DAYS:30}
+      
+      # Cleanup job interval (in hours)
+      cleanup-interval-hours: ${ALERT_CLEANUP_INTERVAL_HOURS:24}
+      
+      # Batch size for cleanup operations
+      cleanup-batch-size: ${ALERT_CLEANUP_BATCH_SIZE:1000}
+      
+      # Archive before delete
+      archive-enabled: ${ALERT_ARCHIVE_ENABLED:false}
+      archive-path: ${ALERT_ARCHIVE_PATH:/var/archives/alerts}
+    
+    # Severity levels and priorities
+    severity:
+      # Define severity levels and their priorities
+      levels:
+        critical:
+          priority: ${SEVERITY_CRITICAL_PRIORITY:1}
+          color: ${SEVERITY_CRITICAL_COLOR:#FF0000}
+        high:
+          priority: ${SEVERITY_HIGH_PRIORITY:2}
+          color: ${SEVERITY_HIGH_COLOR:#FF8800}
+        medium:
+          priority: ${SEVERITY_MEDIUM_PRIORITY:3}
+          color: ${SEVERITY_MEDIUM_COLOR:#FFBB00}
+        low:
+          priority: ${SEVERITY_LOW_PRIORITY:4}
+          color: ${SEVERITY_LOW_COLOR:#88BB00}
+        info:
+          priority: ${SEVERITY_INFO_PRIORITY:5}
+          color: ${SEVERITY_INFO_COLOR:#0088FF}

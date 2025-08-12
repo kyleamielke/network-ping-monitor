@@ -1,0 +1,118 @@
+type Device {
+    id: ID!
+    version: Int!
+    name: String!
+    ipAddress: String
+    hostname: String
+    macAddress: String
+    type: String
+    os: String
+    osType: String
+    make: String
+    model: String
+    endpointId: String
+    assetTag: String
+    description: String
+    location: String
+    site: ID
+    createdAt: DateTime
+    updatedAt: DateTime
+    createdBy: String
+    lastModifiedBy: String
+    roles: [Role!]
+    
+    # Monitoring fields (resolved separately)
+    monitoring: DeviceMonitoring
+    pingTarget: PingTarget
+    currentStatus: DeviceStatus
+    recentPings: [PingResult!]!
+}
+
+type Role {
+    id: ID!
+    name: String!
+    description: String
+}
+
+type DeviceSearchResult {
+    devices: [Device!]!
+    totalElements: Int!
+    totalPages: Int!
+    currentPage: Int!
+    pageSize: Int!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+}
+
+input CreateDeviceInput {
+    name: String!
+    ipAddress: String
+    hostname: String
+    macAddress: String
+    type: String
+    os: String
+    # osType: String
+    make: String
+    model: String
+    endpointId: String
+    assetTag: String
+    description: String
+    location: String
+    # site: ID
+}
+
+input UpdateDeviceInput {
+    expectedVersion: Int
+    name: String
+    ipAddress: String
+    hostname: String
+    macAddress: String
+    type: String
+    os: String
+    # osType: String
+    make: String
+    model: String
+    endpointId: String
+    assetTag: String
+    description: String
+    location: String
+    # site: ID
+}
+
+input DeviceSearchCriteria {
+    name: String
+    ipAddress: String
+    type: String
+    location: String
+    page: Int
+    size: Int
+}
+
+type BulkOperationResult {
+    totalRequested: Int!
+    successful: Int!
+    failed: Int!
+    errors: [String!]!
+}
+
+input BulkUpdateDevicesInput {
+    deviceIds: [ID!]!
+    updates: UpdateFieldsInput!
+}
+
+input UpdateFieldsInput {
+    name: String
+    ipAddress: String
+    hostname: String
+    macAddress: String
+    type: String
+    os: String
+    # osType: String
+    make: String
+    model: String
+    endpointId: String
+    assetTag: String
+    description: String
+    location: String
+    # site: String
+}

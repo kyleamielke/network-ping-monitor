@@ -1,0 +1,26 @@
+device-service:
+  validation:
+    name:
+      min-length: ${DEVICE_SERVICE_VALIDATION_NAME_MIN_LENGTH:3}
+      max-length: ${DEVICE_SERVICE_VALIDATION_NAME_MAX_LENGTH:100}
+      pattern: ${DEVICE_SERVICE_VALIDATION_NAME_PATTERN:^[a-zA-Z0-9][a-zA-Z0-9\\s\\-._]*$}
+      reserved-names: ${DEVICE_SERVICE_VALIDATION_NAME_RESERVED_NAMES:localhost,unknown,none}
+    ip:
+      allow-ipv4: ${DEVICE_SERVICE_VALIDATION_IP_ALLOW_IPV4:true}
+      allow-ipv6: ${DEVICE_SERVICE_VALIDATION_IP_ALLOW_IPV6:true}
+      allow-private: ${DEVICE_SERVICE_VALIDATION_IP_ALLOW_PRIVATE:true}
+      blocked-ranges: ${DEVICE_SERVICE_VALIDATION_IP_BLOCKED_RANGES:}
+      reserved-ips: ${DEVICE_SERVICE_VALIDATION_IP_RESERVED_IPS:0.0.0.0,255.255.255.255}
+    device-type:
+      allowed-types: ${DEVICE_SERVICE_VALIDATION_DEVICE_TYPE_ALLOWED_TYPES:Server,Network Router,Network Switch,Workstation,Virtual Machine,Security Device}
+      default-type: ${DEVICE_SERVICE_VALIDATION_DEVICE_TYPE_DEFAULT_TYPE:Server}
+      case-sensitive: ${DEVICE_SERVICE_VALIDATION_DEVICE_TYPE_CASE_SENSITIVE:true}
+    field-limits:
+      description-max-length: ${DEVICE_SERVICE_VALIDATION_FIELD_LIMITS_DESCRIPTION_MAX_LENGTH:500}
+      location-max-length: ${DEVICE_SERVICE_VALIDATION_FIELD_LIMITS_LOCATION_MAX_LENGTH:200}
+      os-max-length: ${DEVICE_SERVICE_VALIDATION_FIELD_LIMITS_OS_MAX_LENGTH:100}
+      os-type-max-length: ${DEVICE_SERVICE_VALIDATION_FIELD_LIMITS_OS_TYPE_MAX_LENGTH:50}
+      make-max-length: ${DEVICE_SERVICE_VALIDATION_FIELD_LIMITS_MAKE_MAX_LENGTH:100}
+      model-max-length: ${DEVICE_SERVICE_VALIDATION_FIELD_LIMITS_MODEL_MAX_LENGTH:100}
+      endpoint-id-max-length: ${DEVICE_SERVICE_VALIDATION_FIELD_LIMITS_ENDPOINT_ID_MAX_LENGTH:100}
+      asset-tag-max-length: ${DEVICE_SERVICE_VALIDATION_FIELD_LIMITS_ASSET_TAG_MAX_LENGTH:100}

@@ -1,0 +1,98 @@
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME:device-service}
+  lifecycle:
+    timeout-per-shutdown-phase: ${SPRING_LIFECYCLE_TIMEOUT_PER_SHUTDOWN_PHASE:30s}
+  config:
+    import:
+      - classpath:application-database.yml
+      - classpath:application-kafka.yml
+      - classpath:application-validation.yml
+      - classpath:application-service.yml
+      - classpath:application-features.yml
+      - classpath:application-resilience.yml
+      - classpath:application-observability.yml
+      - classpath:application-thread-pool.yml
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:sqlite:data/device-service.db}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.sqlite.JDBC}
+    hikari:
+      maximum-pool-size: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:10}
+      minimum-idle: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE:5}
+  jpa:
+    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    properties:
+      hibernate:
+        format_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL:true}
+        show_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_SHOW_SQL:false}
+        enable_lazy_load_no_trans: ${SPRING_JPA_PROPERTIES_HIBERNATE_ENABLE_LAZY_LOAD_NO_TRANS:true}
+  cloud:
+    consul:
+      host: ${SPRING_CLOUD_CONSUL_HOST:localhost}
+      port: ${SPRING_CLOUD_CONSUL_PORT:8500}
+      discovery:
+        instanceId: ${spring.application.name}:${server.port}
+        healthCheckPath: ${SPRING_CLOUD_CONSUL_DISCOVERY_HEALTH_CHECK_PATH:/actuator/health}
+        healthCheckInterval: ${SPRING_CLOUD_CONSUL_DISCOVERY_HEALTH_CHECK_INTERVAL:15s}
+        prefer-ip-address: ${SPRING_CLOUD_CONSUL_DISCOVERY_PREFER_IP_ADDRESS:true}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+    admin:
+      properties:
+        bootstrap.servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+server:
+  port: ${SERVER_PORT:8081}
+  compression:
+    enabled: ${SERVER_COMPRESSION_ENABLED:true}
+    mime-types: ${SERVER_COMPRESSION_MIME_TYPES:application/json,application/xml,text/html,text/xml,text/plain}
+  error:
+    include-message: ${SERVER_ERROR_INCLUDE_MESSAGE:always}
+    include-binding-errors: ${SERVER_ERROR_INCLUDE_BINDING_ERRORS:always}
+    include-stacktrace: ${SERVER_ERROR_INCLUDE_STACKTRACE:on-param}
+  shutdown: ${SERVER_SHUTDOWN:graceful}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:health,info,metrics,prometheus}
+  endpoint:
+    health:
+      show-details: ${MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS:when-authorized}
+    metrics:
+      enabled: ${MANAGEMENT_ENDPOINT_METRICS_ENABLED:true}
+    prometheus:
+      enabled: ${MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED:true}
+  health:
+    circuitbreakers:
+      enabled: ${MANAGEMENT_HEALTH_CIRCUITBREAKERS_ENABLED:true}
+    db:
+      enabled: ${MANAGEMENT_HEALTH_DB_ENABLED:true}
+    kafka:
+      enabled: ${MANAGEMENT_HEALTH_KAFKA_ENABLED:true}
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: ${MANAGEMENT_METRICS_DISTRIBUTION_PERCENTILES_HISTOGRAM_HTTP_SERVER_REQUESTS:true}
+    tags:
+      application: ${spring.application.name}
+      environment: ${SPRING_PROFILES_ACTIVE:default}
+  tracing:
+    sampling:
+      probability: ${MANAGEMENT_TRACING_SAMPLING_PROBABILITY:0.1}
+
+
+logging:
+  level:
+    io.thatworked.support.device: ${LOGGING_LEVEL_IO_THATWORKED_SUPPORT_DEVICE:INFO}
+    org.springframework.web: ${LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB:WARN}
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: DEBUG

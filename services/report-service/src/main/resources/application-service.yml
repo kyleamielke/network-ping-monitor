@@ -1,0 +1,28 @@
+# Service-specific configuration
+# Configures service metadata, registration, and discovery settings
+
+service:
+  info:
+    name: ${spring.application.name}
+    description: "Report generation and management service"
+    version: "1.0.0"
+    contact:
+      email: "support@thatworked.io"
+    
+  # Service discovery configuration
+  registration:
+    enabled: ${SERVICE_REGISTRATION_ENABLED:true}
+    heartbeat-interval: ${SERVICE_HEARTBEAT_INTERVAL:15}
+    
+  # API versioning
+  api:
+    version: "v1"
+    base-path: "/api/${service.api.version}"
+    
+  # Service metadata for monitoring
+  metadata:
+    environment: ${ENVIRONMENT:development}
+    region: ${REGION:us-east-1}
+    datacenter: ${DATACENTER:primary}
+    team: "backend"
+    criticality: "medium"

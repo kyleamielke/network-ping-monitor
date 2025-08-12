@@ -1,0 +1,52 @@
+# Event Configuration for Alert Service
+# This file contains event type mappings and event processing settings
+
+alert-service:
+  events:
+    # Event type mappings
+    types:
+      # Consumed event types
+      device-deleted: ${EVENT_TYPE_DEVICE_DELETED:device.deleted}
+      device-down: ${EVENT_TYPE_DEVICE_DOWN:device.down}
+      device-recovered: ${EVENT_TYPE_DEVICE_RECOVERED:device.recovered}
+      high-latency: ${EVENT_TYPE_HIGH_LATENCY:high.latency}
+      packet-loss: ${EVENT_TYPE_PACKET_LOSS:packet.loss}
+      
+      # Published event types
+      alert-created: ${EVENT_TYPE_ALERT_CREATED:alert.created}
+      alert-acknowledged: ${EVENT_TYPE_ALERT_ACKNOWLEDGED:alert.acknowledged}
+      alert-resolved: ${EVENT_TYPE_ALERT_RESOLVED:alert.resolved}
+      alert-updated: ${EVENT_TYPE_ALERT_UPDATED:alert.updated}
+      alert-deleted: ${EVENT_TYPE_ALERT_DELETED:alert.deleted}
+    
+    # JSON field names in consumed events
+    field-names:
+      event-type: ${FIELD_EVENT_TYPE:eventType}
+      payload: ${FIELD_PAYLOAD:payload}
+      device-id: ${FIELD_DEVICE_ID:deviceId}
+      device-name: ${FIELD_DEVICE_NAME:deviceName}
+      timestamp: ${FIELD_TIMESTAMP:timestamp}
+      severity: ${FIELD_SEVERITY:severity}
+      message: ${FIELD_MESSAGE:message}
+      metadata: ${FIELD_METADATA:metadata}
+    
+    # Event processing configuration
+    processing:
+      # Maximum event age to process (in seconds)
+      max-event-age-seconds: ${MAX_EVENT_AGE_SECONDS:3600}
+      
+      # Event deduplication
+      enable-deduplication: ${ENABLE_EVENT_DEDUPLICATION:true}
+      deduplication-window-seconds: ${DEDUPLICATION_WINDOW_SECONDS:300}
+      
+      # Event ordering
+      preserve-order: ${PRESERVE_EVENT_ORDER:true}
+      
+      # Dead letter queue for failed events
+      enable-dlq: ${EVENT_ENABLE_DLQ:true}
+      dlq-topic: ${EVENT_DLQ_TOPIC:alert-events-dlq}
+      
+      # Retry configuration for event processing
+      max-retries: ${EVENT_MAX_RETRIES:3}
+      retry-delay-ms: ${EVENT_RETRY_DELAY_MS:1000}
+      retry-multiplier: ${EVENT_RETRY_MULTIPLIER:2}

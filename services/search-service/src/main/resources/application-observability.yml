@@ -1,0 +1,54 @@
+# Observability Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${MANAGEMENT_ENDPOINTS:health,info,metrics,prometheus,loggers,caches}
+      base-path: ${MANAGEMENT_BASE_PATH:/actuator}
+  endpoint:
+    health:
+      show-details: ${HEALTH_SHOW_DETAILS:always}
+      show-components: ${HEALTH_SHOW_COMPONENTS:always}
+      probes:
+        enabled: ${HEALTH_PROBES_ENABLED:true}
+    metrics:
+      enabled: ${METRICS_ENABLED:true}
+    prometheus:
+      enabled: ${PROMETHEUS_ENABLED:true}
+  metrics:
+    export:
+      prometheus:
+        enabled: ${PROMETHEUS_EXPORT_ENABLED:true}
+    tags:
+      application: ${spring.application.name}
+      environment: ${ENVIRONMENT:development}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+        search.query.duration: true
+        search.provider.duration: true
+
+# Logging Configuration
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT:INFO}
+    io.thatworked.support.search: ${LOG_LEVEL_SEARCH:DEBUG}
+    io.thatworked.support.common: ${LOG_LEVEL_COMMON:INFO}
+    org.springframework.web: ${LOG_LEVEL_SPRING_WEB:INFO}
+    org.springframework.kafka: ${LOG_LEVEL_KAFKA:INFO}
+    org.springframework.cloud.openfeign: ${LOG_LEVEL_FEIGN:INFO}
+    org.hibernate: ${LOG_LEVEL_HIBERNATE:WARN}
+    org.hibernate.SQL: ${LOG_LEVEL_SQL:WARN}
+  pattern:
+    console: "${LOG_PATTERN_CONSOLE:%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%15.15t] %-40.40logger{39} : %m%n}"
+    file: "${LOG_PATTERN_FILE:%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%15.15t] %-40.40logger{39} : %m%n}"
+
+# Tracing Configuration (if using distributed tracing)
+spring:
+  sleuth:
+    enabled: ${TRACING_ENABLED:false}
+    sampler:
+      probability: ${TRACING_SAMPLE_RATE:1.0}
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:false}
+    base-url: ${ZIPKIN_BASE_URL:http://localhost:9411}

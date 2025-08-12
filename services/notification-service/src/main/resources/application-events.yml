@@ -1,0 +1,78 @@
+# Event Configuration for Notification Service
+# This file contains event type mappings and event processing settings
+
+notification-service:
+  events:
+    # Event type mappings
+    types:
+      # Notification lifecycle events
+      requested: ${EVENT_TYPE_REQUESTED:NOTIFICATION_REQUESTED}
+      sent: ${EVENT_TYPE_SENT:NOTIFICATION_SENT}
+      failed: ${EVENT_TYPE_FAILED:NOTIFICATION_FAILED}
+      
+      # Consumed event types
+      device-down: ${EVENT_TYPE_DEVICE_DOWN:DEVICE_DOWN}
+      device-recovered: ${EVENT_TYPE_DEVICE_RECOVERED:DEVICE_RECOVERED}
+      high-latency: ${EVENT_TYPE_HIGH_LATENCY:HIGH_LATENCY}
+      packet-loss: ${EVENT_TYPE_PACKET_LOSS:PACKET_LOSS}
+    
+    # Event subjects for different notification types
+    subjects:
+      device-down: "${SUBJECT_DEVICE_DOWN:ALERT: Device %s (%s) is DOWN}"
+      device-recovered: "${SUBJECT_DEVICE_RECOVERED:RECOVERY: Device %s (%s) is UP}"
+    
+    # Event messages for different notification types
+    messages:
+      device-down: "${MESSAGE_DEVICE_DOWN:Device %s (%s) has stopped responding. Reason: %s}"
+      device-recovered: "${MESSAGE_DEVICE_RECOVERED:Device %s (%s) has recovered after %s of downtime.}"
+    
+    # Default notification channels for events
+    channels:
+      device-down: ${CHANNEL_DEVICE_DOWN:EMAIL}
+      device-recovered: ${CHANNEL_DEVICE_RECOVERED:EMAIL}
+    
+    # JSON field names in consumed events
+    field-names:
+      device-id: ${FIELD_DEVICE_ID:deviceId}
+      device-name: ${FIELD_DEVICE_NAME:deviceName}
+      ip-address: ${FIELD_IP_ADDRESS:ipAddress}
+      timestamp: ${FIELD_TIMESTAMP:timestamp}
+      consecutive-failures: ${FIELD_CONSECUTIVE_FAILURES:consecutiveFailures}
+      failure-reason: ${FIELD_FAILURE_REASON:failureReason}
+      last-success-time: ${FIELD_LAST_SUCCESS_TIME:lastSuccessTime}
+      consecutive-successes: ${FIELD_CONSECUTIVE_SUCCESSES:consecutiveSuccesses}
+      response-time-ms: ${FIELD_RESPONSE_TIME_MS:currentResponseTimeMs}
+      down-since: ${FIELD_DOWN_SINCE:downSince}
+      downtime-duration: ${FIELD_DOWNTIME_DURATION:downtimeDuration}
+      event-type: ${FIELD_EVENT_TYPE:eventType}
+    
+    # Event processing configuration
+    processing:
+      # Maximum event age to process (in seconds)
+      max-event-age-seconds: ${MAX_EVENT_AGE_SECONDS:3600}
+      
+      # Event deduplication
+      enable-deduplication: ${ENABLE_EVENT_DEDUPLICATION:true}
+      deduplication-window-seconds: ${DEDUPLICATION_WINDOW_SECONDS:300}
+      
+      # Event ordering
+      preserve-order: ${PRESERVE_EVENT_ORDER:true}
+      
+    # Event metadata
+    metadata:
+      # Include these fields in all published events
+      include-timestamp: ${EVENT_INCLUDE_TIMESTAMP:true}
+      include-correlation-id: ${EVENT_INCLUDE_CORRELATION_ID:true}
+      include-service-name: ${EVENT_INCLUDE_SERVICE_NAME:true}
+      include-service-version: ${EVENT_INCLUDE_SERVICE_VERSION:true}
+      
+    # Event error handling
+    error-handling:
+      # Dead letter queue for failed events
+      enable-dlq: ${EVENT_ENABLE_DLQ:true}
+      dlq-topic: ${EVENT_DLQ_TOPIC:notification-events-dlq}
+      
+      # Retry configuration for event publishing
+      max-retries: ${EVENT_MAX_RETRIES:3}
+      retry-delay-ms: ${EVENT_RETRY_DELAY_MS:1000}
+      retry-multiplier: ${EVENT_RETRY_MULTIPLIER:2}

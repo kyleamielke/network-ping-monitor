@@ -1,0 +1,11 @@
+device-service:
+  database:
+    pool-size: ${DEVICE_SERVICE_DATABASE_POOL_SIZE:10}
+    minimum-idle: ${DEVICE_SERVICE_DATABASE_MINIMUM_IDLE:5}
+    connection-timeout: ${DEVICE_SERVICE_DATABASE_CONNECTION_TIMEOUT:30s}
+    idle-timeout: ${DEVICE_SERVICE_DATABASE_IDLE_TIMEOUT:10m}
+    max-lifetime: ${DEVICE_SERVICE_DATABASE_MAX_LIFETIME:30m}
+    query-timeout: ${DEVICE_SERVICE_DATABASE_QUERY_TIMEOUT:10s}
+    show-sql: ${DEVICE_SERVICE_DATABASE_SHOW_SQL:false}
+    format-sql: ${DEVICE_SERVICE_DATABASE_FORMAT_SQL:false}
+    batch-size: ${DEVICE_SERVICE_DATABASE_BATCH_SIZE:50}

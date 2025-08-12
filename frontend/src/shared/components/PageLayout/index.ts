@@ -1,0 +1,1 @@
+export { PageLayout } from '@/shared/components/PageLayout/PageLayout';

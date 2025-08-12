@@ -1,0 +1,47 @@
+# Test Configuration for Ping Service
+spring:
+  application:
+    name: ping-service
+  
+  # Use in-memory H2 for tests
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+    
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        
+  # Disable Kafka for tests
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers:localhost:9092}
+    producer:
+      enabled: false
+    consumer:
+      enabled: false
+      
+  # Disable Consul for tests  
+  cloud:
+    consul:
+      enabled: false
+      discovery:
+        enabled: false
+      config:
+        enabled: false
+
+# Disable scheduling for tests
+ping-service:
+  ping-executor:
+    enabled: false
+  scheduler:
+    enabled: false
+  database:
+    initializer:
+      enabled: false

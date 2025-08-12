@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: alert-service
+  cloud:
+    consul:
+      host: ${SPRING_CLOUD_CONSUL_HOST:localhost}
+      port: ${SPRING_CLOUD_CONSUL_PORT:8500}
+      config:
+        enabled: true
+        format: YAML
+        default-context: application
+        data-key: data
+      discovery:
+        enabled: true
+        service-name: ${spring.application.name}
+        health-check-interval: 30s
+        health-check-timeout: 10s
+        health-check-path: /actuator/health
+        instance-id: ${spring.application.name}:${SERVER_PORT}

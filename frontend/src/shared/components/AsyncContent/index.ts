@@ -1,0 +1,1 @@
+export { AsyncContent } from '@/shared/components/AsyncContent/AsyncContent';

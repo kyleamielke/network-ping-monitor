@@ -1,0 +1,36 @@
+# Test configuration with default values
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: api-gateway-test
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+# CORS Configuration for tests
+cors:
+  allowed-origins: "*"
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+  max-age: 3600
+
+# Ping configuration for tests
+ping:
+  default-interval-seconds: 5
+
+# Kafka properties for tests
+kafka:
+  bootstrap-servers: localhost:9092
+  consumer:
+    group-id: api-gateway-test
+    auto-offset-reset: latest
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

@@ -1,0 +1,21 @@
+device-service:
+  service:
+    name: ${DEVICE_SERVICE_SERVICE_NAME:device-service}
+    version: ${DEVICE_SERVICE_SERVICE_VERSION:${project.version:0.0.1-SNAPSHOT}}
+    description: ${DEVICE_SERVICE_SERVICE_DESCRIPTION:Microservice for managing device inventory}
+    health:
+      enabled: ${DEVICE_SERVICE_SERVICE_HEALTH_ENABLED:true}
+      check-interval: ${DEVICE_SERVICE_SERVICE_HEALTH_CHECK_INTERVAL:30s}
+      show-details: ${DEVICE_SERVICE_SERVICE_HEALTH_SHOW_DETAILS:true}
+      db-timeout: ${DEVICE_SERVICE_SERVICE_HEALTH_DB_TIMEOUT:5s}
+    api:
+      docs-enabled: ${DEVICE_SERVICE_SERVICE_API_DOCS_ENABLED:true}
+      max-page-size: ${DEVICE_SERVICE_SERVICE_API_MAX_PAGE_SIZE:100}
+      default-page-size: ${DEVICE_SERVICE_SERVICE_API_DEFAULT_PAGE_SIZE:20}
+      log-requests: ${DEVICE_SERVICE_SERVICE_API_LOG_REQUESTS:false}
+    monitoring:
+      enabled: ${DEVICE_SERVICE_SERVICE_MONITORING_ENABLED:true}
+      tracing-enabled: ${DEVICE_SERVICE_SERVICE_MONITORING_TRACING_ENABLED:true}
+      metrics-prefix: ${DEVICE_SERVICE_SERVICE_MONITORING_METRICS_PREFIX:device_service}
+      include-host-tag: ${DEVICE_SERVICE_SERVICE_MONITORING_INCLUDE_HOST_TAG:true}
+      method-metrics: ${DEVICE_SERVICE_SERVICE_MONITORING_METHOD_METRICS:true}

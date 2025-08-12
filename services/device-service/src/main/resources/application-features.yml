@@ -1,0 +1,14 @@
+device-service:
+  features:
+    async-events: ${DEVICE_SERVICE_FEATURES_ASYNC_EVENTS:true}
+    validate-on-update: ${DEVICE_SERVICE_FEATURES_VALIDATE_ON_UPDATE:true}
+    duplicate-ip-check: ${DEVICE_SERVICE_FEATURES_DUPLICATE_IP_CHECK:true}
+    soft-delete: ${DEVICE_SERVICE_FEATURES_SOFT_DELETE:false}
+    audit-logging: ${DEVICE_SERVICE_FEATURES_AUDIT_LOGGING:true}
+    import-export: ${DEVICE_SERVICE_FEATURES_IMPORT_EXPORT:false}
+    bulk-operations: ${DEVICE_SERVICE_FEATURES_BULK_OPERATIONS:true}
+    advanced-search: ${DEVICE_SERVICE_FEATURES_ADVANCED_SEARCH:true}
+    device-relationships: ${DEVICE_SERVICE_FEATURES_DEVICE_RELATIONSHIPS:false}
+    tagging: ${DEVICE_SERVICE_FEATURES_TAGGING:false}
+    rate-limiting: ${DEVICE_SERVICE_FEATURES_RATE_LIMITING:false}
+    compression: ${DEVICE_SERVICE_FEATURES_COMPRESSION:true}

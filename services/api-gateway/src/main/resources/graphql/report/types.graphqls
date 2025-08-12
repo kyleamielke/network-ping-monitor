@@ -1,0 +1,37 @@
+# Report types and enums
+
+enum ReportType {
+    DEVICE_UPTIME
+    SYSTEM_HEALTH
+    NETWORK_PERFORMANCE
+    ALERT_SUMMARY
+}
+
+enum ReportFormat {
+    PDF
+    CSV
+    EXCEL
+}
+
+input ReportRequest {
+    reportType: ReportType!
+    format: ReportFormat!
+    startDate: String
+    endDate: String
+    deviceIds: [ID!]
+    title: String
+}
+
+type ReportResponse {
+    reportId: ID!
+    filename: String!
+    reportType: ReportType!
+    format: ReportFormat!
+    generatedAt: String!
+    fileSizeBytes: Int!
+    downloadUrl: String!
+}
+
+extend type Mutation {
+    generateReport(input: ReportRequest!): ReportResponse!
+}

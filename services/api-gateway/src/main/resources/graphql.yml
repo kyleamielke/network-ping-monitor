@@ -1,0 +1,44 @@
+# GraphQL Configuration
+# All GraphQL-related settings consolidated in one place
+
+graphql:
+  # Query execution limits
+  query:
+    max-complexity: ${GRAPHQL_MAX_QUERY_COMPLEXITY:100}
+    max-depth: ${GRAPHQL_MAX_QUERY_DEPTH:8}
+  
+  # Pagination settings
+  pagination:
+    default-size: ${GRAPHQL_DEFAULT_PAGE_SIZE:20}
+    max-size: ${GRAPHQL_MAX_PAGE_SIZE:100}
+    bulk-operation-size: ${GRAPHQL_BULK_OPERATION_SIZE:10000}
+    ping-history-limit: ${GRAPHQL_PING_HISTORY_LIMIT:1000}
+    
+  # Client interface call defaults (our business logic, not API contract)
+  client-defaults:
+    recent-alerts-limit: ${GRAPHQL_CLIENT_RECENT_ALERTS_LIMIT:5}
+    ping-history-default-limit: ${GRAPHQL_CLIENT_PING_HISTORY_LIMIT:100}
+    device-monitoring-ping-history: ${GRAPHQL_DEVICE_MONITORING_PING_HISTORY:50}
+    dashboard-ping-history: ${GRAPHQL_DASHBOARD_PING_HISTORY:10}
+    search-limit: ${GRAPHQL_SEARCH_LIMIT:10}
+  
+  # Field complexity scoring for query analysis
+  field-complexity:
+    # Expensive operations (database aggregations, multiple service calls)
+    monitoring-dashboard: ${GRAPHQL_COMPLEXITY_MONITORING_DASHBOARD:10}
+    search-devices: ${GRAPHQL_COMPLEXITY_SEARCH_DEVICES:8}
+    ping-history: ${GRAPHQL_COMPLEXITY_PING_HISTORY:5}
+    statistics: ${GRAPHQL_COMPLEXITY_STATISTICS:5}
+    system-health: ${GRAPHQL_COMPLEXITY_SYSTEM_HEALTH:5}
+    
+    # Moderate operations (list operations)
+    devices: ${GRAPHQL_COMPLEXITY_DEVICES:3}
+    alerts: ${GRAPHQL_COMPLEXITY_ALERTS:3}
+    recent-alerts: ${GRAPHQL_COMPLEXITY_RECENT_ALERTS:3}
+    
+    # Simple operations (single entity fetches)
+    device: ${GRAPHQL_COMPLEXITY_DEVICE:1}
+    device-monitoring: ${GRAPHQL_COMPLEXITY_DEVICE_MONITORING:2}
+    
+    # Default complexity for unmapped fields
+    default: ${GRAPHQL_COMPLEXITY_DEFAULT:1}

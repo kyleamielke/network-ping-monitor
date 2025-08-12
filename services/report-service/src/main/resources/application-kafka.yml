@@ -1,0 +1,59 @@
+# Kafka configuration
+# Configures Apache Kafka producer and consumer settings
+
+kafka:
+  # Consumer configuration
+  consumer:
+    # Thread pool settings
+    concurrency: ${KAFKA_CONSUMER_CONCURRENCY:3}
+    poll-timeout: ${KAFKA_CONSUMER_POLL_TIMEOUT:3000}
+    max-poll-records: ${KAFKA_CONSUMER_MAX_POLL_RECORDS:500}
+    max-poll-interval-ms: ${KAFKA_CONSUMER_MAX_POLL_INTERVAL:300000}
+    session-timeout-ms: ${KAFKA_CONSUMER_SESSION_TIMEOUT:30000}
+    
+    # Retry settings
+    retry:
+      attempts: ${KAFKA_CONSUMER_RETRY_ATTEMPTS:3}
+      backoff-ms: ${KAFKA_CONSUMER_RETRY_BACKOFF:1000}
+      max-backoff-ms: ${KAFKA_CONSUMER_RETRY_MAX_BACKOFF:10000}
+      
+    # Error handling
+    error-handler:
+      type: "logging"
+      retry-attempts: ${KAFKA_ERROR_RETRY_ATTEMPTS:3}
+      
+  # Producer configuration
+  producer:
+    # Performance settings
+    batch-size: ${KAFKA_PRODUCER_BATCH_SIZE:16384}
+    linger-ms: ${KAFKA_PRODUCER_LINGER_MS:10}
+    compression-type: ${KAFKA_PRODUCER_COMPRESSION:snappy}
+    
+    # Reliability settings
+    acks: ${KAFKA_PRODUCER_ACKS:all}
+    retries: ${KAFKA_PRODUCER_RETRIES:3}
+    max-in-flight-requests: ${KAFKA_PRODUCER_MAX_IN_FLIGHT:5}
+    enable-idempotence: ${KAFKA_PRODUCER_IDEMPOTENCE:true}
+    
+    # Timeout settings
+    request-timeout-ms: ${KAFKA_PRODUCER_REQUEST_TIMEOUT:30000}
+    delivery-timeout-ms: ${KAFKA_PRODUCER_DELIVERY_TIMEOUT:120000}
+    
+  # Topic configuration
+  topics:
+    # Report generation events
+    report-events:
+      name: ${KAFKA_TOPIC_REPORT_EVENTS:report-events}
+      partitions: ${KAFKA_TOPIC_REPORT_PARTITIONS:3}
+      replication-factor: ${KAFKA_TOPIC_REPORT_REPLICATION:1}
+      
+    # Report status updates
+    report-status:
+      name: ${KAFKA_TOPIC_REPORT_STATUS:report-status-updates}
+      partitions: ${KAFKA_TOPIC_STATUS_PARTITIONS:3}
+      replication-factor: ${KAFKA_TOPIC_STATUS_REPLICATION:1}
+      
+  # Admin configuration
+  admin:
+    auto-create-topics: ${KAFKA_AUTO_CREATE_TOPICS:true}
+    operation-timeout: ${KAFKA_ADMIN_TIMEOUT:30000}

@@ -1,0 +1,36 @@
+# Search Service Configuration
+search:
+  # Cache Configuration
+  cache:
+    enabled: ${SEARCH_CACHE_ENABLED:true}
+    ttl-seconds: ${SEARCH_CACHE_TTL:300}
+    max-size: ${SEARCH_CACHE_MAX_SIZE:1000}
+    
+  # Result Configuration
+  result:
+    default-limit: ${SEARCH_DEFAULT_LIMIT:10}
+    max-limit: ${SEARCH_MAX_LIMIT:100}
+    
+  # Search Provider Configuration
+  provider:
+    timeout-ms: ${SEARCH_PROVIDER_TIMEOUT:5000}
+    parallel-enabled: ${SEARCH_PARALLEL_ENABLED:true}
+    
+  # Relevance Scoring
+  scoring:
+    exact-match-boost: ${SEARCH_EXACT_MATCH_BOOST:0.3}
+    ip-pattern-boost: ${SEARCH_IP_PATTERN_BOOST:0.2}
+    
+# Cache Configuration (Caffeine)
+cache:
+  caffeine:
+    search-cache:
+      spec: maximumSize=${CACHE_MAX_SIZE:1000},expireAfterWrite=${CACHE_EXPIRE_AFTER_WRITE:5m}
+    global-search:
+      spec: maximumSize=${CACHE_GLOBAL_MAX_SIZE:500},expireAfterWrite=${CACHE_GLOBAL_EXPIRE:5m}
+    device-search:
+      spec: maximumSize=${CACHE_DEVICE_MAX_SIZE:300},expireAfterWrite=${CACHE_DEVICE_EXPIRE:5m}
+    alert-search:
+      spec: maximumSize=${CACHE_ALERT_MAX_SIZE:300},expireAfterWrite=${CACHE_ALERT_EXPIRE:5m}
+    report-search:
+      spec: maximumSize=${CACHE_REPORT_MAX_SIZE:300},expireAfterWrite=${CACHE_REPORT_EXPIRE:5m}

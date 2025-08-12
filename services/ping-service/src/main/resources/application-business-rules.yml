@@ -1,0 +1,8 @@
+ping:
+  business-rules:
+    default-ping-interval-seconds: 5
+    min-ping-interval-seconds: 1
+    max-ping-interval-seconds: 3600
+    default-timeout-ms: 5000
+    max-concurrent-targets: 1000
+    cleanup-retention-days: 30

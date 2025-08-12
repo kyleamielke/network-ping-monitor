@@ -1,0 +1,88 @@
+# Feature Flags Configuration for Notification Service
+# This file contains feature toggles and conditional functionality settings
+
+notification-service:
+  features:
+    # Notification channels
+    channels:
+      email:
+        enabled: ${FEATURE_EMAIL_ENABLED:true}
+        
+      slack:
+        enabled: ${FEATURE_SLACK_ENABLED:false}
+        webhook-url: ${SLACK_WEBHOOK_URL:}
+        
+      teams:
+        enabled: ${FEATURE_TEAMS_ENABLED:false}
+        webhook-url: ${TEAMS_WEBHOOK_URL:}
+        
+      sms:
+        enabled: ${FEATURE_SMS_ENABLED:false}
+        provider: ${SMS_PROVIDER:twilio}
+        
+      webhook:
+        enabled: ${FEATURE_WEBHOOK_ENABLED:false}
+        default-url: ${WEBHOOK_DEFAULT_URL:}
+    
+    # Notification types
+    notification-types:
+      device-down:
+        enabled: ${FEATURE_DEVICE_DOWN_ENABLED:true}
+        
+      device-recovered:
+        enabled: ${FEATURE_DEVICE_RECOVERED_ENABLED:true}
+        
+      high-latency:
+        enabled: ${FEATURE_HIGH_LATENCY_ENABLED:true}
+        
+      packet-loss:
+        enabled: ${FEATURE_PACKET_LOSS_ENABLED:true}
+        
+      test:
+        enabled: ${FEATURE_TEST_ENABLED:true}
+    
+    # Processing features
+    processing:
+      # Template processing
+      use-templates: ${FEATURE_USE_TEMPLATES:true}
+      
+      # Event deduplication
+      deduplicate-notifications: ${FEATURE_DEDUPLICATE:true}
+      
+      # Batch processing
+      batch-notifications: ${FEATURE_BATCH_NOTIFICATIONS:false}
+      batch-size: ${FEATURE_BATCH_SIZE:10}
+      batch-window-seconds: ${FEATURE_BATCH_WINDOW:60}
+      
+      # Rate limiting
+      rate-limiting:
+        enabled: ${FEATURE_RATE_LIMITING:true}
+        max-per-device-per-hour: ${RATE_LIMIT_PER_DEVICE:10}
+        max-total-per-hour: ${RATE_LIMIT_TOTAL:1000}
+    
+    # Storage features
+    storage:
+      # Save notification history
+      save-history: ${FEATURE_SAVE_HISTORY:true}
+      
+      # Save notification results
+      save-results: ${FEATURE_SAVE_RESULTS:true}
+      
+      # Archive old notifications
+      archive-enabled: ${FEATURE_ARCHIVE_ENABLED:false}
+      archive-after-days: ${FEATURE_ARCHIVE_AFTER_DAYS:90}
+    
+    # Advanced features
+    advanced:
+      # Multi-language support
+      multi-language: ${FEATURE_MULTI_LANGUAGE:false}
+      default-language: ${DEFAULT_LANGUAGE:en}
+      
+      # Notification scheduling
+      scheduling-enabled: ${FEATURE_SCHEDULING:false}
+      
+      # Notification priorities
+      priority-handling: ${FEATURE_PRIORITY_HANDLING:false}
+      
+      # Custom notification templates per device
+      device-specific-templates: ${FEATURE_DEVICE_TEMPLATES:false}

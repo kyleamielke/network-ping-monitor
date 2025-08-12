@@ -1,0 +1,23 @@
+logging:
+  level:
+    io.thatworked.support.ping: ${LOG_LEVEL:INFO}
+    org.springframework.kafka: WARN
+    org.hibernate: WARN
+    org.springframework.web: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true

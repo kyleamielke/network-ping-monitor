@@ -1,0 +1,73 @@
+# NetworkPing Monitor GraphQL API Root Types
+
+type Query {
+    # Device queries
+    devices: [Device!]!
+    device(id: ID!): Device
+    searchDevices(criteria: DeviceSearchCriteria): DeviceSearchResult!
+    
+    # Device cursor-based pagination
+    devicesConnection(
+        first: Int
+        after: String
+        last: Int
+        before: String
+        filter: DeviceFilter
+    ): DeviceConnection!
+    
+    # Monitoring queries
+    deviceMonitoring(deviceId: ID!): DeviceMonitoring
+    monitoringDashboard: MonitoringDashboard
+    devicesWithMonitoring: [Device!]!
+    
+    # Ping queries
+    pingHistory(deviceId: ID!, timeRange: TimeRange!): PingHistory
+    pingHistoryByTime(deviceId: ID!, timeRange: TimeRangeInput!): PingHistory
+    
+    # Alert queries
+    alerts: [Alert!]!
+    alert(id: ID!): Alert
+    deviceAlerts(deviceId: ID!): [Alert!]!
+    unresolvedAlerts: [Alert!]!
+    
+    # Alert cursor-based pagination
+    alertsConnection(
+        first: Int
+        after: String
+        last: Int
+        before: String
+        filter: AlertFilter
+    ): AlertConnection!
+}
+
+type Mutation {
+    # Device management
+    createDevice(input: CreateDeviceInput!): Device!
+    updateDevice(id: ID!, input: UpdateDeviceInput!): Device!
+    deleteDevice(id: ID!): Boolean!
+    
+    # Bulk device operations
+    bulkDeleteDevices(deviceIds: [ID!]!): BulkOperationResult!
+    bulkUpdateDevices(input: BulkUpdateDevicesInput!): BulkOperationResult!
+    
+    # Ping monitoring
+    startPingMonitoring(deviceId: ID!): PingTarget!
+    stopPingMonitoring(deviceId: ID!): Boolean!
+    
+    # Bulk monitoring operations
+    startMonitoringAll: BulkMonitoringResult!
+    startMonitoringByType(deviceType: String!): BulkMonitoringResult!
+    stopMonitoringAll: BulkMonitoringResult!
+    
+    # Alert management
+    createAlert(input: CreateAlertInput!): Alert!
+    acknowledgeAlert(alertId: ID!): Alert!
+    resolveAlert(alertId: ID!): Alert!
+    deleteAlert(alertId: ID!): Boolean!
+}
+
+type Subscription {
+    pingUpdates(deviceId: ID): PingUpdate
+    alertStream: Alert
+    deviceStatusUpdates(deviceId: ID): DeviceStatusUpdate
+}
